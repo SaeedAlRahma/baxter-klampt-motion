@@ -11,6 +11,10 @@ from Motion import motion
 from sensor_msgs.msg import JointState
 from baxter_core_msgs.msg import JointCommand
 
+import baxter_interface
+import baxter_external_devices
+from baxter_interface import CHECK_VERSION
+
 from klampt import robotsim
 # from klampt.glprogram import *
 # from klampt import vectorops, se3, so3, loader, gldraw, ik
@@ -253,13 +257,14 @@ class PhysicalLowLevelController(LowLevelController):
         return
 
     def appendMilestoneRight(self, destination, dt=2):
-        #print "appending milestone right...len(destination)=", len(destination)
+        print "appending milestone right...len(destination)=", len(destination)
         if len(destination) == 7:
             #while len(destination) < len(self.right_arm_indices):
             #    destination = destination + [0]
+            print 'Destination is: ', destination
             if not motion.robot.right_mq.appendLinear(dt, destination): raise RuntimeError()
         else:
-            #print 'Desitnation is: ', [destination[v] for v in self.right_arm_indices[:7]]
+            print 'Desitnation is: ', [destination[v] for v in self.right_arm_indices[:7]]
             if not motion.robot.right_mq.appendLinear(dt, [destination[v] for v in self.right_arm_indices[:7]]): raise RuntimeError()
         return True
     def appendMilestoneLeft(self, destination, dt=2):
@@ -307,6 +312,22 @@ time.sleep(0.1)
 
 ROBOT = WORLD.robot(0)
 CONTROLLER = PhysicalLowLevelController(ROBOT)
+
+print("Initializing node... ")
+rospy.init_node('baxter_klampt_controller')
+print("Getting robot state... ")
+rs = baxter_interface.RobotEnable(CHECK_VERSION)
+init_state = rs.state().enabled
+
+def clean_shutdown():
+    print("\nExiting klampt controller...")
+    if not init_state:
+        print("Disabling robot...")
+        rs.disable()
+rospy.on_shutdown(clean_shutdown)
+
+print("Enabling robot... ")
+rs.enable()
 
 q = motion.robot.getKlamptSensedPosition()
 rightArmPos = motion.robot.right_limb.sensedPosition()
