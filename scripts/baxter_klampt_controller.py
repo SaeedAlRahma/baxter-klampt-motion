@@ -13,6 +13,12 @@ from sensor_msgs.msg import JointState
 from baxter_core_msgs.msg import JointCommand
 
 from klampt import robotsim
+from klampt import robotcspace, cspace, robotplanning, se3
+from klampt import resource
+from klampt import ik, trajectory
+# from klampt.model.collide import WorldCollider
+# from klampt import *
+
 
 import baxter_interface
 import baxter_external_devices
@@ -36,9 +42,6 @@ RIGHT_ARM_INDICES = [35,36,37,38,39,41,42]
 WAIT_TIME = 2
 
 PATH_DICTIONARY = {}
-WORLD = robotsim.WorldModel()
-# print "Loading simplified Baxter model..."
-# WORLD.loadElement(os.path.join(MODEL_DIR,KLAMPT_MODEL))
 try:
     file = open(RESOURCE_DIR + 'data.json', 'rw') 
     PATH_DICTIONARY = json.load(file)
@@ -47,7 +50,20 @@ except:
     raise Exception('Path Dictionary failed to load')
 # print PATH_DICTIONARY['CONFIG_1'][2][1][0]
 
-def setMilestone(limb, pathname):
+def parseJson():
+    print 'parseJson()'
+    configs = []
+    for i in range(len(PATH_DICTIONARY)):
+        pathname = 'CONFIG_' + str(i)
+        # print PATH_DICTIONARY[pathname]
+        if PATH_DICTIONARY[pathname][0] == RIGHT:
+            # print PATH_DICTIONARY[pathname][2][1][0]
+            configs += [PATH_DICTIONARY[pathname][2][1][0]]
+
+    return configs
+
+
+def moveToMilestone(limb, pathname):
     q = {}
     path = PATH_DICTIONARY[pathname][2][1][0]
     for i in range(len(path)):
@@ -65,6 +81,7 @@ def printMilestone(title, milestone):
 
 
 def main():
+    # SETUP ROS and BAXTER
     print("Initializing node... ")
     rospy.init_node('baxter_klampt_controller')
     print("Getting robot state... ")
@@ -81,7 +98,17 @@ def main():
     print("Enabling robot... ")
     rs.enable()
 
-    # ROBOT = WORLD.robot(0)
+    ## SETUP WORLD
+    WORLD = robotsim.WorldModel()
+    res = WORLD.readFile(MODEL_DIR+KLAMPT_MODEL)
+    if not res:
+        print "Unable to read file", fn
+    ROBOT = WORLD.robot(0)
+    SPACE = robotplanning.makeSpace(world=WORLD, robot=ROBOT,
+                                    edgeCheckResolution=1e-3,
+                                    movingSubset='all')
+
+    # SETUP ROBOT
     LIMB_LEFT = baxter_interface.Limb('left')
     LIMB_RIGHT = baxter_interface.Limb('right')
     GRIP_LEFT = baxter_interface.Gripper('left', CHECK_VERSION)
@@ -89,17 +116,30 @@ def main():
     JOINT_NAMES_LEFT = LIMB_LEFT.joint_names()
     JOINT_NAMES_RIGHT = LIMB_RIGHT.joint_names()
 
-    print JOINT_NAMES_RIGHT
+    parseJson()
 
-    q0 = LIMB_RIGHT.joint_angles()
-    printMilestone("Joint Angles", q0)
+    # SETUP CONFIGS
+    CONFIGS = parseJson()
 
-    setMilestone(LIMB_RIGHT, 'CONFIG_2')
-    
-    q0 = LIMB_RIGHT.joint_angles()
-    printMilestone("Joint Angles", q0)
+    # MOTION PLANNER
+    settings = { 'type':"sbl", 'pertubationRadius':0.5, 'bidirectional':1, 'shortcut':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:1000"}
 
-    setMilestone(LIMB_RIGHT, 'CONFIG_3')
+    wholepath = [CONFIGS[0]]
+    for i in range(len(CONFIGS)-1):
+        path = my_planner(CONFIGS[i], CONFIGS[i+1], 'all', settings)
+        if path is None or len(path)==0:
+            break;
+        wholepath += path[1:]
+
+    # # CONTROLLER
+    # if len(wholepath)>1:
+    #     print 'Path:'
+    #     for q in wholepath:
+    #         print '  ', q
+
+    # for q in wholepath:
+    #     printMilestone("Joint Angles", LIMB_RIGHT.joint_angles())
+    #     moveToMilestone(LIMB_RIGHT, q)
 
     print("Done.")
     
