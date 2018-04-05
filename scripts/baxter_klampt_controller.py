@@ -43,7 +43,7 @@ WAIT_TIME = 2
 
 PATH_DICTIONARY = {}
 try:
-    file = open(RESOURCE_DIR + 'data.json', 'rw') 
+    file = open(RESOURCE_DIR + 'data.json', 'rw')
     PATH_DICTIONARY = json.load(file)
     file.close()
 except:
@@ -62,6 +62,58 @@ def parseJson():
 
     return configs
 
+def my_planner(q0, q, qSubset, settings):
+    t0 = time.time()
+    print "Creating plan..."
+    #this code uses the robotplanning module's convenience functions
+    robot.setConfig(q0)
+    plan = robotplanning.planToConfig(WORLD,ROBOT,q,
+                                  movingSubset=qSubset,
+                                  **settings)
+
+    if plan is None:
+        print 'plan is None...'
+        return None
+
+    print "Planner creation time",time.time()-t0
+    t0 = time.time()
+    plan.space.cspace.enableAdaptiveQueries(True)
+    print "Planning..."
+    for round in range(10):
+        plan.planMore(50)
+    print "Planning time, 500 iterations",time.time()-t0
+
+    #this code just gives some debugging information. it may get expensive
+    #V,E = plan.getRoadmap()
+    #print len(V),"feasible milestones sampled,",len(E),"edges connected"
+    path = plan.getPath()
+    if path is None or len(path)==0:
+        print "Failed to plan path between configuration"
+        print q0
+        print "and"
+        print q
+        # #debug some sampled configurations
+        # print V[0:min(10,len(V))]
+
+    """
+        print "Constraint testing order:"
+        print plan.space.cspace.feasibilityQueryOrder()
+        print "Manually optimizing constraint testing order..."
+        plan.space.cspace.optimizeQueryOrder()
+        print "Optimized constraint testing order:"
+        print plan.space.cspace.feasibilityQueryOrder()
+
+        print "Plan stats:"
+        print plan.getStats()
+
+        print "CSpace stats:"
+        print plan.space.getStats()
+    """
+    #to be nice to the C++ module, do this to free up memory
+    plan.space.close()
+    plan.close()
+
+    return path
 
 def moveToMilestone(limb, pathname):
     q = {}
@@ -116,8 +168,6 @@ def main():
     JOINT_NAMES_LEFT = LIMB_LEFT.joint_names()
     JOINT_NAMES_RIGHT = LIMB_RIGHT.joint_names()
 
-    parseJson()
-
     # SETUP CONFIGS
     CONFIGS = parseJson()
 
@@ -142,7 +192,7 @@ def main():
     #     moveToMilestone(LIMB_RIGHT, q)
 
     print("Done.")
-    
+
 
 if __name__ == '__main__':
     try:
