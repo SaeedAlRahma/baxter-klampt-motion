@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# two from last must be zero! (20 always zero, probobaly so is 40)
+
 """
 Baxter Controller using Klamp't
 """
@@ -18,6 +20,7 @@ from klampt import resource
 from klampt import ik, trajectory
 # from klampt.model.collide import WorldCollider
 # from klampt import *
+# from klampt import motionplanning
 
 
 import baxter_interface
@@ -34,16 +37,17 @@ RESOURCE_DIR = "/home/dukehal/saeed-s2018/src/baxter_saeed/resources/"
 RIGHT = 'right'
 LEFT = 'left'
 BOTH = 'both'
-LEFT_JOINTS = ['left_s0', 'left_s1', 'left_e0', 'left_e1', 'left_w0', 'left_w1', 'left_w2']
+LEFT_JOINTS_SIM = ['left_s0', 'left_s1', 'left_e0', 'left_e1', 'left_w0', 'left_w1', 'left_w2']
+LEFT_JOINTS = ['left_s0', 'left_s1', 'left_w0', 'left_w1', 'left_w2', 'left_e0', 'left_e1']
 LEFT_ARM_INDICES = [15,16,17,18,19,21,22]
-# RIGHT_JOINTS = ['right_s0', 'right_s1', 'right_e0', 'right_e1', 'right_w0', 'right_w1', 'right_w2']
+RIGHT_JOINTS_SIM = ['right_s0', 'right_s1', 'right_e0', 'right_e1', 'right_w0', 'right_w1', 'right_w2']
 RIGHT_JOINTS = ['right_s0', 'right_s1', 'right_w0', 'right_w1', 'right_w2', 'right_e0', 'right_e1']
 RIGHT_ARM_INDICES = [35,36,37,38,39,41,42]
 WAIT_TIME = 2
 
 PATH_DICTIONARY = {}
 try:
-    file = open(RESOURCE_DIR + 'data.json', 'rw')
+    file = open(RESOURCE_DIR + 'dataTest.json', 'rw')
     PATH_DICTIONARY = json.load(file)
     file.close()
 except:
@@ -59,16 +63,67 @@ def parseJson():
         if PATH_DICTIONARY[pathname][0] == RIGHT:
             # print PATH_DICTIONARY[pathname][2][1][0]
             configs += [PATH_DICTIONARY[pathname][2][1][0]]
-
+        elif PATH_DICTIONARY[pathname][0] == LEFT:
+            # print PATH_DICTIONARY[pathname][2][1][0]
+            configs += [PATH_DICTIONARY[pathname][1][1][0]]
     return configs
 
-def my_planner(q0, q, qSubset, settings):
+def convertJointsToSim(qList):
+    qMap = {}
+    qSim = [0]*len(RIGHT_JOINTS_SIM)
+    for i in range(len(qList)):
+        qMap[RIGHT_JOINTS[i]] = qList[i]
+    for i in range(len(RIGHT_JOINTS_SIM)):
+        qSim[i] = qMap[RIGHT_JOINTS_SIM[i]]
+    # print 'qList:', qList
+    # print 'qSim:', qSim
+    return qSim
+
+def convertJointsToPhy(limbName, qList):
+    qMap = {}
+    if limbName == RIGHT:
+        for i in range(len(qList)):
+            qMap[RIGHT_JOINTS_SIM[i]] = qList[i]
+    elif limbName == LEFT:
+        for i in range(len(qList)):
+            qMap[LEFT_JOINTS_SIM[i]] = qList[i]
+    elif limbName == BOTH:
+        print 'BOTH arms not implemented yet'
+    # print 'qList:', qList
+    # print 'qPhy:', qPhy
+    return qMap
+
+def getSimJoints(limbName, rightJoints=[0]*7, leftJoints=[0]*7):
+    joints = [0]*54
+    if limbName == RIGHT:
+        joints[35:42] = convertJointsToSim(rightJoints)
+    elif limbName == LEFT:
+        joints[15:22] = convertJointsToSim(leftJoints)
+    elif limbName == BOTH:
+        joints[35:42] = convertJointsToSim(rightJoints)
+        joints[15:22] = convertJointsToSim(leftJoints)
+    return joints
+
+def getConfigCommand(limbName, q):
+    cmd = [0.0]*7
+    if limbName == RIGHT:
+        cmd = convertJointsToPhy(RIGHT, q[35:42])
+    elif limbName == LEFT:
+        cmd = convertJointsToPhy(LEFT, q[15:22])
+    elif limbName == BOTH:
+        print 'BOTH arms not implemented yet'
+    return cmd
+
+def my_planner(world, robot, q0, q, settings):
+    q0 = getSimJoints(LEFT, leftJoints=q0)
+    q = getSimJoints(LEFT, leftJoints=q)
+
     t0 = time.time()
     print "Creating plan..."
     #this code uses the robotplanning module's convenience functions
     robot.setConfig(q0)
-    plan = robotplanning.planToConfig(WORLD,ROBOT,q,
-                                  movingSubset=qSubset,
+    plan = robotplanning.planToConfig(world,robot,q,
+                                  movingSubset='all',
                                   **settings)
 
     if plan is None:
@@ -77,7 +132,7 @@ def my_planner(q0, q, qSubset, settings):
 
     print "Planner creation time",time.time()-t0
     t0 = time.time()
-    plan.space.cspace.enableAdaptiveQueries(True)
+    # motionplanning.CSpaceInterface.enableAdaptiveQueries()
     print "Planning..."
     for round in range(10):
         plan.planMore(50)
@@ -115,15 +170,12 @@ def my_planner(q0, q, qSubset, settings):
 
     return path
 
-def moveToMilestone(limb, pathname):
-    q = {}
-    path = PATH_DICTIONARY[pathname][2][1][0]
-    for i in range(len(path)):
-        q[RIGHT_JOINTS[i]] = path[i]
+def moveToMilestone(limb, milestone):
+    q = getConfigCommand(LEFT, milestone)
     printMilestone("setMilestone", q)
     # limb.set_joint_positions(q)
     limb.move_to_joint_positions(q)
-    time.sleep(5)
+    #time.sleep(5)
 
 def printMilestone(title, milestone):
     print title, ':'
@@ -170,26 +222,33 @@ def main():
 
     # SETUP CONFIGS
     CONFIGS = parseJson()
+    # print 'CONFIGS:'
+    # for i in range(len(CONFIGS)):
+    #     print '  ', CONFIGS[i]
+
+    # print 'Joint Limits:'
+    # print ROBOT.getJointLimits()
 
     # MOTION PLANNER
-    settings = { 'type':"sbl", 'pertubationRadius':0.5, 'bidirectional':1, 'shortcut':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:1000"}
+    settings = { 'type':"sbl", 'perturbationRadius':0.5, 'bidirectional':1, 'shortcut':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:1000"}
 
-    wholepath = [CONFIGS[0]]
+    wholepath = [getSimJoints(LEFT, leftJoints=CONFIGS[0])]
     for i in range(len(CONFIGS)-1):
-        path = my_planner(CONFIGS[i], CONFIGS[i+1], 'all', settings)
+        path = my_planner(WORLD, ROBOT, CONFIGS[i], CONFIGS[i+1], settings)
         if path is None or len(path)==0:
-            break;
+            print 'Failed to find path between configation %d and %d' % (i, i+1)
+            exit(0)
         wholepath += path[1:]
 
-    # # CONTROLLER
-    # if len(wholepath)>1:
-    #     print 'Path:'
-    #     for q in wholepath:
-    #         print '  ', q
+    # CONTROLLER
+    if len(wholepath)>1:
+        print 'Path:'
+        for q in wholepath:
+            print '  ', q
 
-    # for q in wholepath:
-    #     printMilestone("Joint Angles", LIMB_RIGHT.joint_angles())
-    #     moveToMilestone(LIMB_RIGHT, q)
+    for q in wholepath:
+        printMilestone("Joint Angles", LIMB_LEFT.joint_angles())
+        moveToMilestone(LIMB_LEFT, q)
 
     print("Done.")
 
