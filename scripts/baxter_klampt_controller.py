@@ -33,7 +33,7 @@ KLAMPT_MODEL = "baxter_with_parallel_gripper_col.rob"
 # KLAMPT_MODEL = "baxter_col.rob"
 RESOURCE_DIR = "/home/dukehal/saeed-s2018/src/baxter_saeed/resources/"
 JSON_FILE = RESOURCE_DIR + 'dataTest.json'
-JSON_PATHNAME = "TEST"
+JSON_PATHNAME = "TEST_GRIP_LEFT"
 
 # CONFIGURATIONS
 JOINTS_NUM = 60 # Baxter with parallel hands
@@ -43,6 +43,8 @@ JSON_LIMB = 'limb'
 JSON_RIGHT = 'right'
 JSON_LEFT = 'left'
 JSON_BOTH = 'both'
+JSON_GRIP_LEFT = 'left_g0'
+JSON_GRIP_RIGHT = 'right_g0'
 LEFT_JOINTS_NAMES_SIM = ['left_s0', 'left_s1', 'left_e0', 'left_e1', 'left_w0', 'left_w1', 'left_w2']
 LEFT_ARM_INDICES_SIM = [15,16,17,18,19,21,22]
 RIGHT_JOINTS_NAMES_SIM = ['right_s0', 'right_s1', 'right_e0', 'right_e1', 'right_w0', 'right_w1', 'right_w2']
@@ -79,31 +81,6 @@ def parseJson(pathname):
         print 'Unknown JSON limb name:', PATH_DICTIONARY[pathname][JSON_LIMB]
     return configs
 
-def convertJointsToSim(qList):
-    qMap = {}
-    qSim = [0]*len(RIGHT_JOINTS_SIM)
-    for i in range(len(qList)):
-        qMap[RIGHT_JOINTS[i]] = qList[i]
-    for i in range(len(RIGHT_JOINTS_SIM)):
-        qSim[i] = qMap[RIGHT_JOINTS_SIM[i]]
-    # print 'qList:', qList
-    # print 'qSim:', qSim
-    return qSim
-
-def convertJointsToPhy(limbName, qList):
-    qMap = {}
-    if limbName == RIGHT:
-        for i in range(len(qList)):
-            qMap[RIGHT_JOINTS_SIM[i]] = qList[i]
-    elif limbName == LEFT:
-        for i in range(len(qList)):
-            qMap[LEFT_JOINTS_SIM[i]] = qList[i]
-    elif limbName == BOTH:
-        print 'BOTH arms not implemented yet'
-    # print 'qList:', qList
-    # print 'qPhy:', qPhy
-    return qMap
-
 def getSimJoints(limbName, limbJoints):
     joints = [0.0]*JOINTS_NUM
     if limbName == JSON_RIGHT:
@@ -120,20 +97,24 @@ def getSimJoints(limbName, limbJoints):
         print 'Unknown limb name:', limbName
     return joints
 
-def getCommandPath(limbName, simPath):
+def getCommandPath(limbName, simPath, grip):
     path = []
     if limbName == JSON_RIGHT:
         for i in range(len(simPath)):
             q = {}
             for j in range(len(RIGHT_ARM_INDICES_SIM)):
                 q[RIGHT_JOINTS_NAMES_SIM[j]] = simPath[i][RIGHT_ARM_INDICES_SIM[j]]
+            q[JSON_GRIP_RIGHT] = 0
             path += [q]
+        path[-1][JSON_GRIP_RIGHT] = grip[JSON_GRIP_RIGHT]
     elif limbName == JSON_LEFT:
         for i in range(len(simPath)):
             q = {}
             for j in range(len(LEFT_ARM_INDICES_SIM)):
                 q[LEFT_JOINTS_NAMES_SIM[j]] = simPath[i][LEFT_ARM_INDICES_SIM[j]]
+            q[JSON_GRIP_LEFT] = 0
             path += [q]
+        path[-1][JSON_GRIP_LEFT] = grip[JSON_GRIP_LEFT]
     elif limbName == JSON_BOTH:
         print 'BOTH arms not implemented yet'
     return path
@@ -192,13 +173,29 @@ def my_planner(world, robot, q0, q, settings):
     plan.space.close()
     plan.close()
 
-    return getCommandPath(MOVING_LIMB, path)
+    grip = {JSON_GRIP_LEFT: 0, JSON_GRIP_RIGHT: 0}
+    if MOVING_LIMB == JSON_LEFT:
+        grip[JSON_GRIP_LEFT] = q[JSON_GRIP_LEFT]
+    if MOVING_LIMB == JSON_RIGHT:
+        grip[JSON_GRIP_RIGHT] = q[JSON_GRIP_RIGHT]
+
+    return getCommandPath(MOVING_LIMB, path, grip)
     # return path
 
-def moveToMilestone(limb, milestone):
+def moveToMilestone(limb, grip, milestone):
     printMilestone("moveToMilestone", milestone)
     # limb.set_joint_positions(q)
+    # grip_cmd = (milestone[JSON_GRIP_LEFT], milestone[JSON_GRIP_RIGHT]])
+    grip_cmd = (milestone[JSON_GRIP_LEFT], 0)
+    del milestone[JSON_GRIP_LEFT]
+
+    if not grip_cmd[0]:
+        grip.open(block=True)
+
     limb.move_to_joint_positions(milestone)
+
+    if grip_cmd[0]:
+        grip.close(block=True)
     #time.sleep(5)
 
 def printMilestone(title, milestone):
@@ -207,13 +204,13 @@ def printMilestone(title, milestone):
     print "Left arm:"
     for i in range(len(LEFT_ARM_INDICES_SIM)):
         if LEFT_JOINTS_NAMES_SIM[i] in milestone:
-            print '"' + LEFT_JOINTS_NAMES_SIM[i] + '" : ' + str(milestone[LEFT_JOINTS_NAMES_SIM[i]])
+            print '"%s" : %6.5f,' % (LEFT_JOINTS_NAMES_SIM[i], milestone[LEFT_JOINTS_NAMES_SIM[i]])
     print '--'
     # RIGHT arm
     print "Right arm:"
     for i in range(len(RIGHT_ARM_INDICES_SIM)):
         if RIGHT_JOINTS_NAMES_SIM[i] in milestone:
-            print '"' + RIGHT_JOINTS_NAMES_SIM[i] + '" : ' + str(milestone[RIGHT_JOINTS_NAMES_SIM[i]])
+            print '"%s" : %6.5f,' %(RIGHT_JOINTS_NAMES_SIM[i], milestone[RIGHT_JOINTS_NAMES_SIM[i]])
     print '--------'
 
 def mergeTwoDicts(dict1, dict2):
@@ -251,14 +248,25 @@ def main():
                                     movingSubset='all')
 
     # SETUP ROBOT
+    print 'Setting up the robot...'
     LIMB_LEFT = baxter_interface.Limb('left')
     LIMB_RIGHT = baxter_interface.Limb('right')
+    JOINT_NAMES_LIMB_LEFT = LIMB_LEFT.joint_names()
+    JOINT_NAMES_LIMB_RIGHT = LIMB_RIGHT.joint_names()
     GRIP_LEFT = baxter_interface.Gripper('left', CHECK_VERSION)
     GRIP_RIGHT = baxter_interface.Gripper('right', CHECK_VERSION)
-    JOINT_NAMES_LEFT = LIMB_LEFT.joint_names()
-    JOINT_NAMES_RIGHT = LIMB_RIGHT.joint_names()
+    if not GRIP_RIGHT.calibrated():
+        GRIP_RIGHT.calibrate()
+    print 'Gripper right calibrated'
+    if not GRIP_LEFT.calibrated():
+        GRIP_LEFT.calibrate()
+    print 'Gripper left calibrated'
+    GRIP_RIGHT.open(block=True)
+    GRIP_LEFT.open(block=True)
+    
 
     # SETUP CONFIGS
+    print 'Parsing', JSON_PATHNAME, 'path from JSON'
     CONFIGS = parseJson(JSON_PATHNAME)
     print 'CONFIGS:'
     for i in range(len(CONFIGS)):
@@ -266,7 +274,8 @@ def main():
 
     # print 'Joint Limits:'
     # print ROBOT.getJointLimits()
-    # printMilestone("Joint Angles", LIMB_LEFT.joint_angles())
+    # print LIMB_LEFT.endpoint_pose()
+    printMilestone("Joint Angles", mergeTwoDicts(LIMB_LEFT.joint_angles(),LIMB_RIGHT.joint_angles()))
 
     # MOTION PLANNER
     settings = { 'type':"sbl", 'perturbationRadius':0.5, 'bidirectional':1, 'shortcut':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:1000"}
@@ -286,8 +295,7 @@ def main():
             print '  ', q
 
     for q in wholepath:
-        printMilestone("Joint Angles", mergeTwoDicts(LIMB_LEFT.joint_angles(),LIMB_RIGHT.joint_angles()))
-        moveToMilestone(LIMB_LEFT, q)
+        moveToMilestone(LIMB_LEFT, GRIP_LEFT, q)
 
     print("Done.")
 
