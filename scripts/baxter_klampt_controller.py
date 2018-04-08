@@ -32,6 +32,7 @@ MODEL_DIR = COMMON_DIR + "klampt_models/"
 KLAMPT_MODEL = "baxter_with_parallel_gripper_col.rob"
 # KLAMPT_MODEL = "baxter_col.rob"
 RESOURCE_DIR = "/home/dukehal/saeed-s2018/src/baxter_saeed/resources/"
+WORLD_MODEL = "baxterWorld.xml"
 JSON_FILE = RESOURCE_DIR + 'dataTest.json'
 JSON_PATHNAME = "TEST_GRIP_LEFT"
 
@@ -61,6 +62,58 @@ try:
 except:
     raise Exception('Path Dictionary failed to load')
 # print PATH_DICTIONARY['CONFIG_1'][2][1][0]
+
+## SETUP WORLD
+WORLD = robotsim.WorldModel()
+# fn = MODEL_DIR+KLAMPT_MODEL
+fn = RESOURCE_DIR+WORLD_MODEL
+res = WORLD.readFile(fn)
+if not res:
+    print "Unable to read file", fn
+    exit(0)
+ROBOT = WORLD.robot(0)
+SPACE = robotplanning.makeSpace(world=WORLD, robot=ROBOT,
+                                edgeCheckResolution=1e-3,
+                                movingSubset='all')
+
+def printMilestone(title, milestone):
+    print title, ':'
+    # LEFT arm
+    print "Left arm:"
+    for i in range(len(LEFT_ARM_INDICES_SIM)):
+        if LEFT_JOINTS_NAMES_SIM[i] in milestone:
+            print '"%s" : %6.5f,' % (LEFT_JOINTS_NAMES_SIM[i], milestone[LEFT_JOINTS_NAMES_SIM[i]])
+    print '--'
+    # RIGHT arm
+    print "Right arm:"
+    for i in range(len(RIGHT_ARM_INDICES_SIM)):
+        if RIGHT_JOINTS_NAMES_SIM[i] in milestone:
+            print '"%s" : %6.5f,' %(RIGHT_JOINTS_NAMES_SIM[i], milestone[RIGHT_JOINTS_NAMES_SIM[i]])
+    print '--------'
+
+def mergeTwoDicts(dict1, dict2):
+    combined = dict1.copy()
+    combined.update(dict2)
+    return combined
+
+def fixConfigLimits(limbName, path):
+    jointLimits = ROBOT.getJointLimits()
+    for q in path:
+        for i in range(len(LEFT_ARM_INDICES_SIM)):
+            if limbName == JSON_LEFT:
+                if q[LEFT_JOINTS_NAMES_SIM[i]] < joint_names[0][LEFT_ARM_INDICES_SIM[i]]:
+                    q[LEFT_JOINTS_NAMES_SIM[i]] = jointLimits[0][LEFT_ARM_INDICES_SIM[i]]
+                elif q[LEFT_JOINTS_NAMES_SIM[i]] > joint_names[1][LEFT_ARM_INDICES_SIM[i]]:
+                    q[LEFT_JOINTS_NAMES_SIM[i]] = jointLimits[1][LEFT_ARM_INDICES_SIM[i]]
+            elif limbName == JSON_RIGHT:
+                if q[RIGHT_JOINTS_NAMES_SIM[i]] < joint_names[0][RIGHT_ARM_INDICES_SIM[i]]:
+                    q[RIGHT_JOINTS_NAMES_SIM[i]] = jointLimits[0][RIGHT_ARM_INDICES_SIM[i]]
+                elif q[RIGHT_JOINTS_NAMES_SIM[i]] > joint_names[1][RIGHT_ARM_INDICES_SIM[i]]:
+                    q[RIGHT_JOINTS_NAMES_SIM[i]] = jointLimits[1][RIGHT_ARM_INDICES_SIM[i]]
+    # might need to return new path
+
+
+
 
 """
  parse the Json file to config map
@@ -188,35 +241,12 @@ def moveToMilestone(limb, grip, milestone):
     # grip_cmd = (milestone[JSON_GRIP_LEFT], milestone[JSON_GRIP_RIGHT]])
     grip_cmd = (milestone[JSON_GRIP_LEFT], 0)
     del milestone[JSON_GRIP_LEFT]
-
     if not grip_cmd[0]:
         grip.open(block=True)
-
     limb.move_to_joint_positions(milestone)
-
     if grip_cmd[0]:
         grip.close(block=True)
     #time.sleep(5)
-
-def printMilestone(title, milestone):
-    print title, ':'
-    # LEFT arm
-    print "Left arm:"
-    for i in range(len(LEFT_ARM_INDICES_SIM)):
-        if LEFT_JOINTS_NAMES_SIM[i] in milestone:
-            print '"%s" : %6.5f,' % (LEFT_JOINTS_NAMES_SIM[i], milestone[LEFT_JOINTS_NAMES_SIM[i]])
-    print '--'
-    # RIGHT arm
-    print "Right arm:"
-    for i in range(len(RIGHT_ARM_INDICES_SIM)):
-        if RIGHT_JOINTS_NAMES_SIM[i] in milestone:
-            print '"%s" : %6.5f,' %(RIGHT_JOINTS_NAMES_SIM[i], milestone[RIGHT_JOINTS_NAMES_SIM[i]])
-    print '--------'
-
-def mergeTwoDicts(dict1, dict2):
-    combined = dict1.copy()
-    combined.update(dict2)
-    return combined
 
 
 def main():
@@ -237,16 +267,6 @@ def main():
     print("Enabling robot... ")
     rs.enable()
 
-    ## SETUP WORLD
-    WORLD = robotsim.WorldModel()
-    res = WORLD.readFile(MODEL_DIR+KLAMPT_MODEL)
-    if not res:
-        print "Unable to read file", fn
-    ROBOT = WORLD.robot(0)
-    SPACE = robotplanning.makeSpace(world=WORLD, robot=ROBOT,
-                                    edgeCheckResolution=1e-3,
-                                    movingSubset='all')
-
     # SETUP ROBOT
     print 'Setting up the robot...'
     LIMB_LEFT = baxter_interface.Limb('left')
@@ -263,7 +283,7 @@ def main():
     print 'Gripper left calibrated'
     GRIP_RIGHT.open(block=True)
     GRIP_LEFT.open(block=True)
-    
+
 
     # SETUP CONFIGS
     print 'Parsing', JSON_PATHNAME, 'path from JSON'

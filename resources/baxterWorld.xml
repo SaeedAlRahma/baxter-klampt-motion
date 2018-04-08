@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<world>
+  <robot name="Baxter" file="/home/saeed/Klampt/data/robots/baxter_with_parallel_gripper_col.rob" />
+  <terrain file="/home/saeed/Klampt/data/terrains/block.off"
+    translation="0.0 0.0 -1.0"/>
+
+  <!-- the table -->
+  <terrain name="Table_Leg1" file="/home/saeed/Klampt/data/terrains/cube.off"
+    scale="0.05 0.05 0.7"
+    translation="0.6 0.25 -0.89">
+     <display color="0.4 0.3 0.2"/>
+  </terrain>
+  <terrain name="Table_Leg2" file="/home/saeed/Klampt/data/terrains/cube.off"
+    scale="0.05 0.05 0.7"
+    translation="0.6 -0.25 -0.89">
+     <display color="0.4 0.3 0.2"/>
+  </terrain>
+  <terrain name="Table_Leg3" file="/home/saeed/Klampt/data/terrains/cube.off"
+    scale="0.05 0.05 0.7"
+    translation="1.1 0.25 -0.89">
+     <display color="0.4 0.3 0.2"/>
+  </terrain>
+  <terrain name="Table_Leg4" file="/home/saeed/Klampt/data/terrains/cube.off"
+    scale="0.05 0.05 0.7"
+    translation="1.1 -0.25 -0.89">
+     <display color="0.4 0.3 0.2"/>
+  </terrain>
+  <terrain name="Table_Top" file="/home/saeed/Klampt/data/terrains/cube.off"
+    scale="1.0 1.0 0.02"
+    translation="0.575 -0.275 -0.185">
+     <display color="0.4 0.3 0.2"/>
+  </terrain>
+  <simulation>
+     <object index="0">
+       <geometry padding="0.005" />
+     </object>
+  </simulation>
+</world>
