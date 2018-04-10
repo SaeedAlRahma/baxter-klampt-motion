@@ -34,7 +34,7 @@ KLAMPT_MODEL = "baxter_with_parallel_gripper_col.rob"
 RESOURCE_DIR = "/home/dukehal/saeed-s2018/src/baxter_saeed/resources/"
 WORLD_MODEL = "baxterWorld.xml"
 JSON_FILE = RESOURCE_DIR + 'dataTest.json'
-JSON_PATHNAME = "TEST_GRIP_LEFT"
+JSON_PATHNAME = "TASK_MIN"
 
 # CONFIGURATIONS
 JOINTS_NUM = 60 # Baxter with parallel hands
@@ -76,19 +76,25 @@ SPACE = robotplanning.makeSpace(world=WORLD, robot=ROBOT,
                                 edgeCheckResolution=1e-3,
                                 movingSubset='all')
 
-def printMilestone(title, milestone):
+def printMilestone(title, milestone, gripLeft=0, gripRight=0):
     print title, ':'
     # LEFT arm
     print "Left arm:"
+    print '{'
     for i in range(len(LEFT_ARM_INDICES_SIM)):
         if LEFT_JOINTS_NAMES_SIM[i] in milestone:
-            print '"%s" : %6.5f,' % (LEFT_JOINTS_NAMES_SIM[i], milestone[LEFT_JOINTS_NAMES_SIM[i]])
+            print '    "%s" : %6.5f,' % (LEFT_JOINTS_NAMES_SIM[i], milestone[LEFT_JOINTS_NAMES_SIM[i]])
+    print '    "%s" : %d' % (JSON_GRIP_LEFT, gripLeft)
+    print '}'
     print '--'
     # RIGHT arm
     print "Right arm:"
+    print '{'
     for i in range(len(RIGHT_ARM_INDICES_SIM)):
         if RIGHT_JOINTS_NAMES_SIM[i] in milestone:
-            print '"%s" : %6.5f,' %(RIGHT_JOINTS_NAMES_SIM[i], milestone[RIGHT_JOINTS_NAMES_SIM[i]])
+            print '    "%s" : %6.5f,' %(RIGHT_JOINTS_NAMES_SIM[i], milestone[RIGHT_JOINTS_NAMES_SIM[i]])
+    print '    "%s" : %d' % (JSON_GRIP_RIGHT, gripRight)
+    print '}'
     print '--------'
 
 def mergeTwoDicts(dict1, dict2):
@@ -101,14 +107,14 @@ def fixConfigLimits(limbName, path):
     for q in path:
         for i in range(len(LEFT_ARM_INDICES_SIM)):
             if limbName == JSON_LEFT:
-                if q[LEFT_JOINTS_NAMES_SIM[i]] < joint_names[0][LEFT_ARM_INDICES_SIM[i]]:
+                if q[LEFT_JOINTS_NAMES_SIM[i]] < jointLimits[0][LEFT_ARM_INDICES_SIM[i]]:
                     q[LEFT_JOINTS_NAMES_SIM[i]] = jointLimits[0][LEFT_ARM_INDICES_SIM[i]]
-                elif q[LEFT_JOINTS_NAMES_SIM[i]] > joint_names[1][LEFT_ARM_INDICES_SIM[i]]:
+                elif q[LEFT_JOINTS_NAMES_SIM[i]] > jointLimits[1][LEFT_ARM_INDICES_SIM[i]]:
                     q[LEFT_JOINTS_NAMES_SIM[i]] = jointLimits[1][LEFT_ARM_INDICES_SIM[i]]
             elif limbName == JSON_RIGHT:
-                if q[RIGHT_JOINTS_NAMES_SIM[i]] < joint_names[0][RIGHT_ARM_INDICES_SIM[i]]:
+                if q[RIGHT_JOINTS_NAMES_SIM[i]] < jointLimits[0][RIGHT_ARM_INDICES_SIM[i]]:
                     q[RIGHT_JOINTS_NAMES_SIM[i]] = jointLimits[0][RIGHT_ARM_INDICES_SIM[i]]
-                elif q[RIGHT_JOINTS_NAMES_SIM[i]] > joint_names[1][RIGHT_ARM_INDICES_SIM[i]]:
+                elif q[RIGHT_JOINTS_NAMES_SIM[i]] > jointLimits[1][RIGHT_ARM_INDICES_SIM[i]]:
                     q[RIGHT_JOINTS_NAMES_SIM[i]] = jointLimits[1][RIGHT_ARM_INDICES_SIM[i]]
     # might need to return new path
 
@@ -132,6 +138,7 @@ def parseJson(pathname):
         configs += PATH_DICTIONARY[pathname][JSON_LEFT]
     else:
         print 'Unknown JSON limb name:', PATH_DICTIONARY[pathname][JSON_LIMB]
+    fixConfigLimits(MOVING_LIMB, configs)
     return configs
 
 def getSimJoints(limbName, limbJoints):
@@ -236,16 +243,19 @@ def my_planner(world, robot, q0, q, settings):
     # return path
 
 def moveToMilestone(limb, grip, milestone):
-    printMilestone("moveToMilestone", milestone)
+    
     # limb.set_joint_positions(q)
     # grip_cmd = (milestone[JSON_GRIP_LEFT], milestone[JSON_GRIP_RIGHT]])
     grip_cmd = (milestone[JSON_GRIP_LEFT], 0)
+    printMilestone("moveToMilestone", milestone, grip_cmd[0], grip_cmd[1])
     del milestone[JSON_GRIP_LEFT]
-    if not grip_cmd[0]:
-        grip.open(block=True)
+    # if not grip_cmd[0]:
+    #     grip.open(block=True)
     limb.move_to_joint_positions(milestone)
     if grip_cmd[0]:
         grip.close(block=True)
+    else:
+         grip.open(block=True)
     #time.sleep(5)
 
 
@@ -295,7 +305,7 @@ def main():
     # print 'Joint Limits:'
     # print ROBOT.getJointLimits()
     # print LIMB_LEFT.endpoint_pose()
-    printMilestone("Joint Angles", mergeTwoDicts(LIMB_LEFT.joint_angles(),LIMB_RIGHT.joint_angles()))
+    printMilestone("Joint Angles", mergeTwoDicts(LIMB_LEFT.joint_angles(),LIMB_RIGHT.joint_angles()), GRIP_LEFT.position()<90, GRIP_RIGHT.position<90)
 
     # MOTION PLANNER
     settings = { 'type':"sbl", 'perturbationRadius':0.5, 'bidirectional':1, 'shortcut':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:1000"}
