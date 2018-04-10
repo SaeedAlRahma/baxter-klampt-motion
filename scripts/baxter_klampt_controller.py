@@ -1,10 +1,8 @@
 #!/usr/bin/env python
-
-# two from last must be zero! (20 always zero, probobaly so is 40)
-
 """
-Baxter Controller using Klamp't
+Baxter Controller using Klamp't Motion Planning
 """
+
 # Import Modules
 import os, sys, struct, time, json, rospy
 
@@ -34,9 +32,10 @@ KLAMPT_MODEL = "baxter_with_parallel_gripper_col.rob"
 RESOURCE_DIR = "/home/dukehal/saeed-s2018/src/baxter_saeed/resources/"
 WORLD_MODEL = "baxterWorld.xml"
 JSON_FILE = RESOURCE_DIR + 'dataTest.json'
-JSON_PATHNAME = "TASK_MIN"
+JSON_PATHNAME = "TEST_GRIP_RIGHT"
 
 # CONFIGURATIONS
+PLANNER_TYPE = "sbl"
 JOINTS_NUM = 60 # Baxter with parallel hands
 
 # Constants
@@ -64,6 +63,7 @@ except:
 # print PATH_DICTIONARY['CONFIG_1'][2][1][0]
 
 ## SETUP WORLD
+print "-------------------- Creating World --------------------"
 WORLD = robotsim.WorldModel()
 # fn = MODEL_DIR+KLAMPT_MODEL
 fn = RESOURCE_DIR+WORLD_MODEL
@@ -71,6 +71,7 @@ res = WORLD.readFile(fn)
 if not res:
     print "Unable to read file", fn
     exit(0)
+print "-------------------- World Successfully Created --------------------"
 ROBOT = WORLD.robot(0)
 SPACE = robotplanning.makeSpace(world=WORLD, robot=ROBOT,
                                 edgeCheckResolution=1e-3,
@@ -118,9 +119,6 @@ def fixConfigLimits(limbName, path):
                     q[RIGHT_JOINTS_NAMES_SIM[i]] = jointLimits[1][RIGHT_ARM_INDICES_SIM[i]]
     # might need to return new path
 
-
-
-
 """
  parse the Json file to config map
 """
@@ -164,22 +162,22 @@ def getCommandPath(limbName, simPath, grip):
             q = {}
             for j in range(len(RIGHT_ARM_INDICES_SIM)):
                 q[RIGHT_JOINTS_NAMES_SIM[j]] = simPath[i][RIGHT_ARM_INDICES_SIM[j]]
-            q[JSON_GRIP_RIGHT] = 0
+            q[JSON_GRIP_RIGHT] = grip[JSON_GRIP_RIGHT][0]
             path += [q]
-        path[-1][JSON_GRIP_RIGHT] = grip[JSON_GRIP_RIGHT]
+        path[-1][JSON_GRIP_RIGHT] = grip[JSON_GRIP_RIGHT][1]
     elif limbName == JSON_LEFT:
         for i in range(len(simPath)):
             q = {}
             for j in range(len(LEFT_ARM_INDICES_SIM)):
                 q[LEFT_JOINTS_NAMES_SIM[j]] = simPath[i][LEFT_ARM_INDICES_SIM[j]]
-            q[JSON_GRIP_LEFT] = 0
+            q[JSON_GRIP_LEFT] = grip[JSON_GRIP_LEFT][0]
             path += [q]
-        path[-1][JSON_GRIP_LEFT] = grip[JSON_GRIP_LEFT]
+        path[-1][JSON_GRIP_LEFT] = grip[JSON_GRIP_LEFT][1]
     elif limbName == JSON_BOTH:
         print 'BOTH arms not implemented yet'
     return path
 
-def my_planner(world, robot, q0, q, settings):
+def myPlanner(q0, q, settings):
     qSim0 = getSimJoints(MOVING_LIMB, q0)
     qSim = getSimJoints(MOVING_LIMB, q)
 
@@ -187,7 +185,7 @@ def my_planner(world, robot, q0, q, settings):
     print "Creating plan..."
     #this code uses the robotplanning module's convenience functions
     robot.setConfig(qSim0)
-    plan = robotplanning.planToConfig(world,robot,qSim,
+    plan = robotplanning.planToConfig(WORLD,ROBOT,qSim,
                                   movingSubset='all',
                                   **settings)
 
@@ -199,7 +197,7 @@ def my_planner(world, robot, q0, q, settings):
     t0 = time.time()
     # motionplanning.CSpaceInterface.enableAdaptiveQueries()
     print "Planning..."
-    for round in range(10):
+    for round in range(1):
         plan.planMore(50)
     print "Planning time, 500 iterations",time.time()-t0
 
@@ -233,30 +231,39 @@ def my_planner(world, robot, q0, q, settings):
     plan.space.close()
     plan.close()
 
-    grip = {JSON_GRIP_LEFT: 0, JSON_GRIP_RIGHT: 0}
+    grip = {JSON_GRIP_LEFT: [0,0], JSON_GRIP_RIGHT: [0,0]}
     if MOVING_LIMB == JSON_LEFT:
-        grip[JSON_GRIP_LEFT] = q[JSON_GRIP_LEFT]
+        grip[JSON_GRIP_LEFT][0] = q0[JSON_GRIP_LEFT]
+        grip[JSON_GRIP_LEFT][1] = q[JSON_GRIP_LEFT]
     if MOVING_LIMB == JSON_RIGHT:
-        grip[JSON_GRIP_RIGHT] = q[JSON_GRIP_RIGHT]
+        grip[JSON_GRIP_RIGHT][0] = q0[JSON_GRIP_RIGHT]
+        grip[JSON_GRIP_RIGHT][1] = q[JSON_GRIP_RIGHT]
 
     return getCommandPath(MOVING_LIMB, path, grip)
     # return path
 
-def moveToMilestone(limb, grip, milestone):
-    
-    # limb.set_joint_positions(q)
-    # grip_cmd = (milestone[JSON_GRIP_LEFT], milestone[JSON_GRIP_RIGHT]])
-    grip_cmd = (milestone[JSON_GRIP_LEFT], 0)
-    printMilestone("moveToMilestone", milestone, grip_cmd[0], grip_cmd[1])
-    del milestone[JSON_GRIP_LEFT]
-    # if not grip_cmd[0]:
-    #     grip.open(block=True)
-    limb.move_to_joint_positions(milestone)
-    if grip_cmd[0]:
-        grip.close(block=True)
-    else:
-         grip.open(block=True)
-    #time.sleep(5)
+def moveToMilestoneBlocking(limbRight=0, limbLeft=0, gripRight=0, gripLeft=0, milestone={}):
+    gripCmd = {JSON_RIGHT: 0, JSON_LEFT: 0}
+
+    if limbRight:
+        gripCmd[JSON_RIGHT] = milestone[JSON_GRIP_RIGHT]
+        del milestone[JSON_GRIP_RIGHT]
+        limbRight.move_to_joint_positions(milestone)
+        if gripCmd[JSON_RIGHT]:
+            gripRight.close(block=True)
+        else:
+             gripRight.open(block=True)
+
+    if limbLeft:
+        gripCmd[JSON_LEFT] = milestone[JSON_GRIP_LEFT]
+        del milestone[JSON_GRIP_LEFT]
+        limbLeft.move_to_joint_positions(milestone)
+        if gripCmd[JSON_LEFT]:
+            gripLeft.close(block=True)
+        else:
+             gripLeft.open(block=True)
+
+    printMilestone("moveToMilestone", milestone, gripCmd[JSON_LEFT], gripCmd[JSON_RIGHT])
 
 
 def main():
@@ -281,8 +288,8 @@ def main():
     print 'Setting up the robot...'
     LIMB_LEFT = baxter_interface.Limb('left')
     LIMB_RIGHT = baxter_interface.Limb('right')
-    JOINT_NAMES_LIMB_LEFT = LIMB_LEFT.joint_names()
-    JOINT_NAMES_LIMB_RIGHT = LIMB_RIGHT.joint_names()
+    # JOINT_NAMES_LIMB_LEFT = LIMB_LEFT.joint_names()
+    # JOINT_NAMES_LIMB_RIGHT = LIMB_RIGHT.joint_names()
     GRIP_LEFT = baxter_interface.Gripper('left', CHECK_VERSION)
     GRIP_RIGHT = baxter_interface.Gripper('right', CHECK_VERSION)
     if not GRIP_RIGHT.calibrated():
@@ -293,7 +300,6 @@ def main():
     print 'Gripper left calibrated'
     GRIP_RIGHT.open(block=True)
     GRIP_LEFT.open(block=True)
-
 
     # SETUP CONFIGS
     print 'Parsing', JSON_PATHNAME, 'path from JSON'
@@ -308,11 +314,17 @@ def main():
     printMilestone("Joint Angles", mergeTwoDicts(LIMB_LEFT.joint_angles(),LIMB_RIGHT.joint_angles()), GRIP_LEFT.position()<90, GRIP_RIGHT.position<90)
 
     # MOTION PLANNER
-    settings = { 'type':"sbl", 'perturbationRadius':0.5, 'bidirectional':1, 'shortcut':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:1000"}
+    planTypeDict = {}
+    planTypeDict["sbl"] = { 'type':"sbl", 'perturbationRadius':0.5, 'bidirectional':1, 'shortcut':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:1000"}
+    
+    print "-------------------- Motion Planning --------------------"
+    settings = planTypeDict[PLANNER_TYPE]
+    print "Planner type", PLANNER_TYPE
+    print "Planner settings", settings
 
     wholepath = [CONFIGS[0]]
     for i in range(len(CONFIGS)-1):
-        path = my_planner(WORLD, ROBOT, CONFIGS[i], CONFIGS[i+1], settings)
+        path = myPlanner(CONFIGS[i], CONFIGS[i+1], settings)
         if path is None or len(path)==0:
             print 'Failed to find path between configation %d and %d' % (i, i+1)
             exit(0)
@@ -320,12 +332,14 @@ def main():
 
     # CONTROLLER
     if len(wholepath)>1:
-        print 'Path:'
-        for q in wholepath:
-            print '  ', q
+        print 'Path:', len(wholepath)
+        # for q in wholepath:
+        #     print '  ', q
 
     for q in wholepath:
-        moveToMilestone(LIMB_LEFT, GRIP_LEFT, q)
+        moveToMilestoneBlocking(limbRight=LIMB_RIGHT, gripRight=GRIP_RIGHT, milestone=q)
+        # moveToMilestone(LIMB_LEFT, GRIP_LEFT, q)
+        # moveToMilestone(LIMB_RIGHT, LIMB_LEFT, GRIP_RIGHT, GRIP_LEFT, q)
 
     print("Done.")
 
