@@ -36,14 +36,14 @@
 
     <!-- Rigid Objects -->
     <rigidObject name="block1"  position="1.1428 0.2304 0.0352">
-       <geometry mesh="cube.off"
+       <geometry mesh="cube.tri"
          scale="0.04445 0.04445 0.04445"
          translation="-0.022225 -0.022225 0.0" />
        <physics mass="0.1" automass="1" kRestitution="0" kFriction="1" kStiffness="10000" kDamping="3000" />
        <display color="1.0 0.0 0.0"/>
     </rigidObject>
     <rigidObject name="block2"  position="1.1428 -0.2304 0.0352">
-       <geometry mesh="cube.off"
+       <geometry mesh="cube.tri"
          scale="0.0381 0.0381 0.0381"
          translation="-0.0191 -0.0191 0.0" />
        <physics mass="0.1" automass="1" kRestitution="0" kFriction="1" kStiffness="10000" kDamping="3000" />
