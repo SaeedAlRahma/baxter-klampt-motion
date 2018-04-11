@@ -1,29 +1,17 @@
 #!/usr/bin/env python
-"""
-Baxter Controller using Klamp't Motion Planning
-"""
-
 # Import Modules
 import os, sys, struct, time, json, rospy
 
 COMMON_DIR = "/home/dukehal/ece490-s2016/common/"
 sys.path.append(COMMON_DIR)
 
-from sensor_msgs.msg import JointState
-from baxter_core_msgs.msg import JointCommand
-
 from klampt import robotsim
 from klampt import robotcspace, cspace, robotplanning, se3
 from klampt import resource
 from klampt import ik, trajectory
-# from klampt.model.collide import WorldCollider
+from klampt import visualization
+# from klampt import WorldCollider
 # from klampt import *
-# from klampt import motionplanning
-
-
-import baxter_interface
-import baxter_external_devices
-from baxter_interface import CHECK_VERSION
 
 """
 SIMULATION CONFIGURATIONS
@@ -248,7 +236,7 @@ def myPlanner(q0, q, settings):
     t0 = time.time()
     # motionplanning.CSpaceInterface.enableAdaptiveQueries()
     print "Planning..."
-    for round in range(10):
+    for round in range(20):
         plan.planMore(50)
     print "Planning time, 500 iterations",time.time()-t0
 
@@ -282,88 +270,21 @@ def myPlanner(q0, q, settings):
     plan.space.close()
     plan.close()
 
-    grip = {JSON_GRIP_LEFT: [0,0], JSON_GRIP_RIGHT: [0,0]}
-    if MOVING_LIMB == JSON_LEFT:
-        grip[JSON_GRIP_LEFT][0] = q0[JSON_GRIP_LEFT]
-        grip[JSON_GRIP_LEFT][1] = q[JSON_GRIP_LEFT]
-    if MOVING_LIMB == JSON_RIGHT:
-        grip[JSON_GRIP_RIGHT][0] = q0[JSON_GRIP_RIGHT]
-        grip[JSON_GRIP_RIGHT][1] = q[JSON_GRIP_RIGHT]
-    if MOVING_LIMB == JSON_BOTH:
-        grip[JSON_GRIP_RIGHT][0] = q0[JSON_GRIP_RIGHT]
-        grip[JSON_GRIP_RIGHT][1] = q[JSON_GRIP_RIGHT]
-        grip[JSON_GRIP_LEFT][0] = q0[JSON_GRIP_LEFT]
-        grip[JSON_GRIP_LEFT][1] = q[JSON_GRIP_LEFT]
-
-    return getCommandPath(MOVING_LIMB, path, grip)
-
-"""
-Move the robot from initial to next configuration
-"""
-def moveToMilestoneBlocking(limbRight=0, limbLeft=0, gripRight=0, gripLeft=0, milestone={}):
-    gripCmd = {JSON_RIGHT: 0, JSON_LEFT: 0}
-    limbCmd = {JSON_RIGHT: {}, JSON_LEFT: {}}
-
-    if limbRight:
-        for q in milestone:
-            if q in RIGHT_JOINTS_NAMES_SIM:
-                limbCmd[JSON_RIGHT][q] = milestone[q]
-        gripCmd[JSON_RIGHT] = milestone[JSON_GRIP_RIGHT]
-        limbRight.move_to_joint_positions(limbCmd[JSON_RIGHT])
-        if gripCmd[JSON_RIGHT]:
-            gripRight.close(block=True)
-        else:
-             gripRight.open(block=True)
-
-    if limbLeft:
-        for q in milestone:
-            if q in LEFT_JOINTS_NAMES_SIM:
-                limbCmd[JSON_LEFT][q] = milestone[q]
-        gripCmd[JSON_LEFT] = milestone[JSON_GRIP_LEFT]
-        limbLeft.move_to_joint_positions(limbCmd[JSON_LEFT])
-        if gripCmd[JSON_LEFT]:
-            gripLeft.close(block=True)
-        else:
-             gripLeft.open(block=True)
-
-    printMilestone("moveToMilestone", milestone, gripCmd[JSON_LEFT], gripCmd[JSON_RIGHT])
-
+    return path
 
 def main():
-    # SETUP ROS and BAXTER
-    print("Initializing node... ")
-    rospy.init_node('baxter_klampt_controller')
-    print("Getting robot state... ")
-    rs = baxter_interface.RobotEnable(CHECK_VERSION)
-    init_state = rs.state().enabled
-
-    def clean_shutdown():
-        print("\nExiting klampt controller...")
-        if not init_state:
-            print("Disabling robot...")
-            rs.disable()
-    rospy.on_shutdown(clean_shutdown)
-
-    print("Enabling robot... ")
-    rs.enable()
-
-    # SETUP ROBOT
-    print 'Setting up the robot...'
-    LIMB_LEFT = baxter_interface.Limb('left')
-    LIMB_RIGHT = baxter_interface.Limb('right')
-    LIMB_LEFT.set_joint_position_speed(JOINT_SPEED_RATIO)
-    # JOINT_NAMES_LIMB_LEFT = LIMB_LEFT.joint_names()
-    # JOINT_NAMES_LIMB_RIGHT = LIMB_RIGHT.joint_names()
-    GRIP_LEFT = baxter_interface.Gripper('left', CHECK_VERSION)
-    GRIP_RIGHT = baxter_interface.Gripper('right', CHECK_VERSION)
-    if not GRIP_RIGHT.calibrated():
-        GRIP_RIGHT.calibrate()
-    print 'Gripper right calibrated'
-    if not GRIP_LEFT.calibrated():
-        GRIP_LEFT.calibrate()
-    print 'Gripper left calibrated'
-    GRIP_RIGHT.open(block=True)
-    GRIP_LEFT.open(block=True)
+    #add the world elements individually to the visualization
+    visualization.add("robot",ROBOT)
+    print "Added robot to visualization"
+    for i in range(1,WORLD.numRobots()):
+        visualization.add("robot"+str(i),WORLD.robot(i))
+        print "Added robot ", str(i)
+    for i in range(WORLD.numRigidObjects()):
+        visualization.add("rigidObject"+str(i),WORLD.rigidObject(i))
+        print "Added rigidObject ", str(i)
+    for i in range(WORLD.numTerrains()):
+        visualization.add("terrain"+str(i),WORLD.terrain(i))
+        print "Added terrain ", str(i)
 
     # SETUP CONFIGS
     print "-------------------- Path Configs --------------------"
@@ -372,12 +293,6 @@ def main():
     print 'CONFIGS:'
     for i in range(len(CONFIGS)):
         print '  ', i, ':', CONFIGS[i]
-
-    # print 'Joint Limits:'
-    # print ROBOT.getJointLimits()
-    # print LIMB_LEFT.endpoint_pose()
-    print "-------------------- Current Configs --------------------"
-    printMilestone("Joint Angles", mergeTwoDicts(LIMB_LEFT.joint_angles(),LIMB_RIGHT.joint_angles()), GRIP_LEFT.position()<90, GRIP_RIGHT.position<90)
 
     # MOTION PLANNER
     planTypeDict = {}
@@ -403,9 +318,16 @@ def main():
         #     print '  ', q
 
     for q in wholepath:
-        # moveToMilestoneBlocking(limbRight=LIMB_RIGHT, gripRight=GRIP_RIGHT, milestone=q)
-        # moveToMilestoneBlocking(LIMB_LEFT, GRIP_LEFT, q)
-        moveToMilestoneBlocking(LIMB_RIGHT, LIMB_LEFT, GRIP_RIGHT, GRIP_LEFT, q)
+        #draw the path as a RobotTrajectory (you could just animate wholepath, but for robots with non-standard joints
+        #the results will often look odd).  Animate with 5-second duration
+        times = [i*5.0/(len(wholepath)-1) for i in range(len(wholepath))]
+        traj = trajectory.RobotTrajectory(ROBOT,times=times,milestones=wholepath)
+        # print traj.interpolate(wholepath[0], wholepath[1], 10, 1)
+        #show the path in the visualizer, repeating for 60 seconds
+        visualization.animate("robot",traj)
+        visualization.spin(60)
+
+    visualization.kill()
 
     print("Done.")
 
@@ -415,3 +337,4 @@ if __name__ == '__main__':
         main()
     except rospy.ROSInterruptException:
        pass
+
