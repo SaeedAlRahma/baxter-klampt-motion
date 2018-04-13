@@ -29,7 +29,11 @@ from baxter_interface import CHECK_VERSION
 SIMULATION CONFIGURATIONS
 """
 PLANNER_TYPE = "sbl"
-JOINT_SPEED_RATIO = 1.0 # [0, 1.0] of 1.5 m/s (4.0 for wrists) 
+PLANNER_TIMES = 10
+PLANNER_RUNS = 50
+JOINT_SPEED_RATIO = 0.5 # [0, 1.0] of 1.5 m/s (4.0 for wrists) 
+JOINT_CMD_THRESHOLD = 0.008726646 # default
+JSON_PATHNAME = "TASK_MIN_SHORT"
 JOINTS_NUM = 60 # Baxter with parallel hands
 
 # Directories
@@ -39,7 +43,7 @@ KLAMPT_MODEL = "baxter_with_parallel_gripper_col.rob"
 RESOURCE_DIR = "/home/dukehal/saeed-s2018/src/baxter_saeed/resources/"
 WORLD_MODEL = "baxterWorld.xml"
 JSON_FILE = RESOURCE_DIR + 'dataTest.json'
-JSON_PATHNAME = "TASK_MIN"
+
 
 # Constants
 JSON_LIMB = 'limb'
@@ -248,9 +252,9 @@ def myPlanner(q0, q, settings):
     t0 = time.time()
     # motionplanning.CSpaceInterface.enableAdaptiveQueries()
     print "Planning..."
-    for round in range(10):
-        plan.planMore(50)
-    print "Planning time, 500 iterations",time.time()-t0
+    for round in range(PLANNER_TIMES):
+        plan.planMore(PLANNER_RUNS)
+    print "Planning time,", PLANNER_TIMES*PLANNER_RUNS, "iterations",time.time()-t0
 
     #this code just gives some debugging information. it may get expensive
     #V,E = plan.getRoadmap()
@@ -298,9 +302,104 @@ def myPlanner(q0, q, settings):
     return getCommandPath(MOVING_LIMB, path, grip)
 
 """
-Move the robot from initial to next configuration
+(blocking) Move the robot from initial to next configuration 
 """
 def moveToMilestoneBlocking(limbRight=0, limbLeft=0, gripRight=0, gripLeft=0, milestone={}):
+    gripCmd = {JSON_RIGHT: 0, JSON_LEFT: 0}
+    limbCmd = {JSON_RIGHT: {}, JSON_LEFT: {}}
+
+    if limbRight:
+        print 'Moving Right Limb'
+        for q in milestone:
+            if q in RIGHT_JOINTS_NAMES_SIM:
+                limbCmd[JSON_RIGHT][q] = milestone[q]
+        gripCmd[JSON_RIGHT] = milestone[JSON_GRIP_RIGHT]
+        limbRight.move_to_joint_positions(limbCmd[JSON_RIGHT])
+        if gripCmd[JSON_RIGHT]:
+            print 'Closing Right Grip'
+            gripRight.close(block=True)
+        else:
+             gripRight.open(block=True)
+
+    if limbLeft:
+        print 'Moving Left Limb'
+        for q in milestone:
+            if q in LEFT_JOINTS_NAMES_SIM:
+                limbCmd[JSON_LEFT][q] = milestone[q]
+        gripCmd[JSON_LEFT] = milestone[JSON_GRIP_LEFT]
+        limbLeft.move_to_joint_positions(limbCmd[JSON_LEFT])
+        if gripCmd[JSON_LEFT]:
+            print 'Closing Left Grip'
+            gripLeft.close(block=True)
+        else:
+             gripLeft.open(block=True)
+
+    printMilestone("moveToMilestone", milestone, gripCmd[JSON_LEFT], gripCmd[JSON_RIGHT])
+
+"""
+return True if grip close (not completely open)
+"""
+def isGripClosed(grip):
+    return grip.position()<90
+
+"""
+Command the grip (1 for closed, 0 for open)
+and return true if grip is in commanded position
+"""
+def commandGrip(grip, cmd):
+    if cmd:
+        grip.close()
+        return isGripClosed(grip)
+    else:
+        grip.open()
+        return not isGripClosed(grip)
+
+"""
+Check if joint angles are within threshold
+"""
+def isWithinThreshold(jointAngles, jointCmds):
+    for angle in jointAngles:
+        if abs(jointAngles[angle] - jointCmds[angle]) > JOINT_CMD_THRESHOLD:
+            return False
+    return True
+
+"""
+Publish joint position command until joints are within threshold
+"""
+def waitForMovement(limbCmd, gripCmd, limbRight=0, limbLeft=0, gripRight=0, gripLeft=0):
+    # Set to False if define, otherwise ignore (by setting to True)
+    limbRightTarget = limbRight==0
+    gripRightTarget = gripRight==0
+    limbLeftTarget = limbLeft==0
+    gripLeftTarget = gripLeft==0
+    isRightDone = limbRightTarget and gripRightTarget
+    isLeftDone = limbLeftTarget and gripLeftTarget
+
+    # Loop until angles within target threshold
+    while not isRightDone or not isLeftDone:
+        # RIGHT
+        if not limbRightTarget:
+            limbRight.set_joint_positions(limbCmd[JSON_RIGHT]) # move
+            limbRightTarget = isWithinThreshold(limbRight.joint_angles(), limbCmd[JSON_RIGHT]) # check threshold
+        elif not gripRightTarget:
+            gripRightTarget = commandGrip(gripRight, gripCmd[JSON_RIGHT]) # gripper
+
+
+        # LEFT
+        if not limbLeftTarget:
+            limbLeft.set_joint_positions(limbCmd[JSON_LEFT]) # move
+            limbLeftTarget = isWithinThreshold(limbLeft.joint_angles(), limbCmd[JSON_LEFT]) # check threshold
+        elif not gripLeftTarget:
+            gripLeftTarget = commandGrip(gripLeft, gripCmd[JSON_LEFT]) # gripper 
+
+        # Check done
+        isRightDone = limbRightTarget and gripRightTarget
+        isLeftDone = limbLeftTarget and gripLeftTarget
+
+"""
+Move the robot from initial to next configuration 
+"""
+def moveToMilestone(limbRight=0, limbLeft=0, gripRight=0, gripLeft=0, milestone={}):
     gripCmd = {JSON_RIGHT: 0, JSON_LEFT: 0}
     limbCmd = {JSON_RIGHT: {}, JSON_LEFT: {}}
 
@@ -309,24 +408,16 @@ def moveToMilestoneBlocking(limbRight=0, limbLeft=0, gripRight=0, gripLeft=0, mi
             if q in RIGHT_JOINTS_NAMES_SIM:
                 limbCmd[JSON_RIGHT][q] = milestone[q]
         gripCmd[JSON_RIGHT] = milestone[JSON_GRIP_RIGHT]
-        limbRight.move_to_joint_positions(limbCmd[JSON_RIGHT])
-        if gripCmd[JSON_RIGHT]:
-            gripRight.close(block=True)
-        else:
-             gripRight.open(block=True)
 
     if limbLeft:
         for q in milestone:
             if q in LEFT_JOINTS_NAMES_SIM:
                 limbCmd[JSON_LEFT][q] = milestone[q]
         gripCmd[JSON_LEFT] = milestone[JSON_GRIP_LEFT]
-        limbLeft.move_to_joint_positions(limbCmd[JSON_LEFT])
-        if gripCmd[JSON_LEFT]:
-            gripLeft.close(block=True)
-        else:
-             gripLeft.open(block=True)
 
     printMilestone("moveToMilestone", milestone, gripCmd[JSON_LEFT], gripCmd[JSON_RIGHT])
+    waitForMovement(limbCmd, gripCmd, limbRight, limbLeft, gripRight, gripLeft)
+
 
 
 def main():
@@ -377,7 +468,7 @@ def main():
     # print ROBOT.getJointLimits()
     # print LIMB_LEFT.endpoint_pose()
     print "-------------------- Current Configs --------------------"
-    printMilestone("Joint Angles", mergeTwoDicts(LIMB_LEFT.joint_angles(),LIMB_RIGHT.joint_angles()), GRIP_LEFT.position()<90, GRIP_RIGHT.position<90)
+    printMilestone("Joint Angles", mergeTwoDicts(LIMB_LEFT.joint_angles(),LIMB_RIGHT.joint_angles()), isGripClosed(GRIP_LEFT), isGripClosed(GRIP_RIGHT))
 
     # MOTION PLANNER
     planTypeDict = {}
@@ -405,7 +496,8 @@ def main():
     for q in wholepath:
         # moveToMilestoneBlocking(limbRight=LIMB_RIGHT, gripRight=GRIP_RIGHT, milestone=q)
         # moveToMilestoneBlocking(LIMB_LEFT, GRIP_LEFT, q)
-        moveToMilestoneBlocking(LIMB_RIGHT, LIMB_LEFT, GRIP_RIGHT, GRIP_LEFT, q)
+        # moveToMilestoneBlocking(LIMB_RIGHT, LIMB_LEFT, GRIP_RIGHT, GRIP_LEFT, q)
+        moveToMilestone(LIMB_RIGHT, LIMB_LEFT, GRIP_RIGHT, GRIP_LEFT, q)
 
     print("Done.")
 
