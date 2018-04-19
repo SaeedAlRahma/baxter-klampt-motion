@@ -33,7 +33,7 @@ PLANNER_TIMES = 10
 PLANNER_RUNS = 50
 JOINT_SPEED_RATIO = 0.5 # [0, 1.0] of 1.5 m/s (4.0 for wrists) 
 JOINT_CMD_THRESHOLD = 0.008726646 # default
-JSON_PATHNAME = "TASK_MIN_SHORT"
+JSON_PATHNAME = "TASK_MIN"
 JOINTS_NUM = 60 # Baxter with parallel hands
 
 # Directories
