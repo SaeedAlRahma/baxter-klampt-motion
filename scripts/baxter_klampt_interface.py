@@ -38,9 +38,9 @@ class BaxterKlamptInterface:
 		print("Initializing node... ")
 	    	rospy.init_node('baxter_klampt_interface')
 		self.loadWorld(worldFilename)
-		self.configs = self.parseJson(jsonFilename, jsonPathname) 
+		self.configs = self.parseJson(jsonFilename, jsonPathname)
 		self.settingDict = self.getAllSettings()
-		self.planType = plannerType 
+		self.planType = plannerType
 		self.planRounds = planRounds
 		self.planTimes = planTimes
 		self.jointThreshold = jointThreshold
@@ -141,22 +141,30 @@ class BaxterKlamptInterface:
 		print 'PATH CONFIGS:'
 		for i in range(len(self.configs)):
 			print '  ', i, ':', self.configs[i]
-	
+
 	"""
 	Load all plan settings
 	"""
 	def getAllSettings(self):
 		planTypeDict = {}
-    		planTypeDict["sbl"] = { 'type':"sbl", 'perturbationRadius':0.5, 'bidirectional':1, 'shortcut':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:1000"}
-    		return planTypeDict
+		planTypeDict["sbl_opt"] = { 'type':"sbl", 'perturbationRadius':0.5, 'bidirectional':1, 'shortcut':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:1000"}
+		planTypeDict["sbl"] = { 'type':"sbl", 'perturbationRadius':0.5, 'randomizeFrequency':1000 }
+		planTypeDict["sbl_cut"] = { 'type':"sbl", 'perturbationRadius':0.5, 'randomizeFrequency':1000, 'shortcut':1 }
+		planTypeDict["rrt"] = { 'type':"rrt", 'perturbationRadius':0.5, 'bidirectional':1 }
+		planTypeDict["rrt_cut"] = { 'type':"rrt", 'perturbationRadius':0.5, 'bidirectional':1, 'shortcut':1 }
+		planTypeDict["rrt_opt"] = { 'type':"rrt", 'perturbationRadius':0.5, 'bidirectional':1, 'shortcut':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:1000}" }
+		planTypeDict["lazyprm*"] = { 'type':"lazyprm*", 'connectionThreshold':100 }
+		return planTypeDict
 
 	"""
 	Get plan settings
 	"""
 	def getPlanSettings(self):
-		if self.planType == 'sbl':
-			return { 'type':"sbl", 'perturbationRadius':0.5, 'bidirectional':1, 'shortcut':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:1000"}
-    		return None
+		if self.planType in self.settingDict:
+			return self.settingDict[self.planType]
+		# if self.planType == 'sbl':
+		# 	return { 'type':"sbl", 'perturbationRadius':0.5, 'bidirectional':1, 'shortcut':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:1000"}
+    	return None
 
 	"""
 	Get Path configs
@@ -523,14 +531,14 @@ class BaxterKlamptInterface:
 	            self.limbLeft.set_joint_positions(limbCmd[JSON_LEFT]) # move
 	            limbLeftTarget = self.isWithinThreshold(self.limbLeft.joint_angles(), limbCmd[JSON_LEFT]) # check threshold
 	        elif not gripLeftTarget:
-	            gripLeftTarget = self.commandLeftGrip(gripCmd[JSON_LEFT]) # gripper 
+	            gripLeftTarget = self.commandLeftGrip(gripCmd[JSON_LEFT]) # gripper
 
 	        # Check done
 	        isRightDone = limbRightTarget and gripRightTarget
 	        isLeftDone = limbLeftTarget and gripLeftTarget
 
 	"""
-	Move the robot from initial to next configuration 
+	Move the robot from initial to next configuration
 	"""
 	def moveToMilestone(self, milestone):
 	    gripCmd = {JSON_RIGHT: 0, JSON_LEFT: 0}
@@ -550,6 +558,3 @@ class BaxterKlamptInterface:
 
 	    self.printMilestone("moveToMilestone", milestone, gripCmd[JSON_LEFT], gripCmd[JSON_RIGHT])
 	    self.waitForMovement(limbCmd, gripCmd, self.isRightMoving(), self.isLeftMoving())
-
-	    
-	    
