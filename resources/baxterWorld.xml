@@ -35,28 +35,28 @@
     </terrain>
 
     <!-- Rigid Objects -->
-    <rigidObject name="block1"  position="1.1176 0.2254 -0.01">
+    <rigidObject name="block1"  position="1.1176 0.2377 -0.01">
        <geometry mesh="cube.tri"
          scale="0.0381 0.0381 0.0381"
          translation="-0.0191 -0.0191 0.0" />
        <physics mass="0.1" automass="1" kRestitution="0" kFriction="1" kStiffness="10000" kDamping="3000" />
        <display color="0.0 0.0 1.0"/>
      </rigidObject>
-     <rigidObject name="block2"  position="1.1428 -0.2524 -0.01">
+     <rigidObject name="block2"  position="1.1428 -0.2549 -0.01">
        <geometry mesh="cube.tri"
          scale="0.0381 0.0381 0.0381"
          translation="-0.0191 -0.0191 0.0" />
        <physics mass="0.1" automass="1" kRestitution="0" kFriction="1" kStiffness="10000" kDamping="3000" />
        <display color="0.0 0.0 1.0"/>
      </rigidObject>
-     <rigidObject name="block1F"  position="1.0541 -0.009 -0.01">
+     <rigidObject name="block1F"  position="0.9073 -0.009 -0.01">
        <geometry mesh="cube.tri"
          scale="0.0381 0.0381 0.0381"
          translation="-0.0191 -0.0191 0.0" />
        <physics mass="0.1" automass="1" kRestitution="0" kFriction="1" kStiffness="10000" kDamping="3000" />
        <display color="1.0 0.0 0.0"/>
      </rigidObject>
-     <rigidObject name="block2F"  position="1.0541 -0.0085 0.0281">
+     <rigidObject name="block2F"  position="0.9073 -0.0085 0.0281">
        <geometry mesh="cube.tri"
          scale="0.035 0.035 0.0381"
          translation="-0.0175 -0.0175 0.0" />
