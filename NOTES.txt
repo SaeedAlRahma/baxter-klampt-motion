@@ -1,0 +1,10 @@
+NOTES
+
+* Compare the TIME for different planner to plan the same path
+	- Different planners (sbl, rrt, prm)
+	- Variation of planners (shortcutting, restart, etc)
+	- Different number of iterations
+	- Different time?
+* Compare the TIME each solution takes for the robot to complete
+	- Normal task
+	- Untuck after each motion

@@ -164,7 +164,7 @@ class BaxterKlamptInterface:
 			return self.settingDict[self.planType]
 		# if self.planType == 'sbl':
 		# 	return { 'type':"sbl", 'perturbationRadius':0.5, 'bidirectional':1, 'shortcut':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:1000"}
-    	return None
+    		return { 'type':"sbl", 'perturbationRadius':0.5, 'bidirectional':1, 'shortcut':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:1000"}
 
 	"""
 	Get Path configs
@@ -285,6 +285,15 @@ class BaxterKlamptInterface:
 	    print '    "%s" : %d' % (JSON_GRIP_RIGHT, gripRight)
 	    print '}'
 	    print '--------'
+
+	"""
+	Print current configurations
+	"""
+	def printCurConfigs(self):
+		self.printMilestone("Joint Angles", 
+							self.mergeTwoDicts(self.limbLeft.joint_angles(),self.limbRight.joint_angles()), 
+							self.isLeftGripClosed(), 
+							self.isRightGripClosed())
 
 	"""
 	Convert left joints configuration dictionary to simulation configuration array

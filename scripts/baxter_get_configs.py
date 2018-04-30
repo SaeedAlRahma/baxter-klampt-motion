@@ -29,12 +29,12 @@ from baxter_klampt_interface import BaxterKlamptInterface
 """
 SIMULATION CONFIGURATIONS
 """
-PLANNER_TYPE = "sbl_opt"
-PLANNER_ROUNDS = 10
+PLANNER_TYPE = "sbl"
+PLANNER_ROUNDS = 20
 PLANNER_TIMES = 50
 JOINT_SPEED_RATIO = 0.5 # [0, 1.0] of 1.5 m/s (4.0 for wrists) 
 JOINT_CMD_THRESHOLD = 0.008726646 # default
-JSON_PATHNAME = "TASK_SWAP"
+JSON_PATHNAME = "LEFT_PICKPLACE"
 JOINTS_NUM = 60 # Baxter with parallel hands
 
 # Directories
@@ -99,40 +99,7 @@ def main():
                                     jointSpeedRatio=JOINT_SPEED_RATIO, 
                                     jointThreshold=JOINT_CMD_THRESHOLD)
 
-    baxter.printPathConfigs()
-
-    # # print LIMB_LEFT.endpoint_pose()
-    # print "-------------------- Current Configs --------------------"
-    # printMilestone("Joint Angles", mergeTwoDicts(LIMB_LEFT.joint_angles(),LIMB_RIGHT.joint_angles()), isGripClosed(GRIP_LEFT), isGripClosed(GRIP_RIGHT))
-
-    # MOTION PLANNER    
-    print "-------------------- Motion Planning --------------------"
-    # print "Planner type", PLANNER_TYPE
-    print 'Settings:', baxter.getPlanSettings()
-    print "Planner # rounds", PLANNER_ROUNDS
-    print "Planner # times", PLANNER_TIMES
-
-    CONFIGS = baxter.getPathConfigs()
-    wholepath = [CONFIGS[0]]
-    for i in range(len(CONFIGS)-1):
-        path = baxter.pathPlanner(CONFIGS[i], CONFIGS[i+1])
-        if path is None or len(path)==0:
-            print 'Failed to find path between configation %d and %d' % (i, i+1)
-            exit(0)
-        wholepath += path[1:]
-
-    # CONTROLLER
-    if len(wholepath)>1:
-        print 'Path:', len(wholepath)
-        # for q in wholepath:
-        #     print '  ', q
-
-    for q in wholepath:
-        # moveToMilestoneBlocking(limbRight=LIMB_RIGHT, gripRight=GRIP_RIGHT, milestone=q)
-        # moveToMilestoneBlocking(LIMB_LEFT, GRIP_LEFT, q)
-        # moveToMilestoneBlocking(LIMB_RIGHT, LIMB_LEFT, GRIP_RIGHT, GRIP_LEFT, q)
-        # moveToMilestone(LIMB_RIGHT, LIMB_LEFT, GRIP_RIGHT, GRIP_LEFT, q)
-        baxter.moveToMilestone(q)
+    baxter.printCurConfigs()
 
     print("Done.")
 
