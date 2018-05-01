@@ -32,9 +32,9 @@ SIMULATION CONFIGURATIONS
 PLANNER_TYPE = "sbl_opt"
 PLANNER_ROUNDS = 10
 PLANNER_TIMES = 50
-JOINT_SPEED_RATIO = 0.5 # [0, 1.0] of 1.5 m/s (4.0 for wrists) 
+JOINT_SPEED_RATIO = 0.1 # [0, 1.0] of 1.5 m/s (4.0 for wrists) 
 JOINT_CMD_THRESHOLD = 0.008726646 # default
-JSON_PATHNAME = "TASK_SWAP"
+JSON_PATHNAME = "TASK_STACK_DIR"
 JOINTS_NUM = 60 # Baxter with parallel hands
 
 # Directories

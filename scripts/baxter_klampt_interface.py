@@ -302,6 +302,8 @@ class BaxterKlamptInterface:
 	    	joints = [0.0]*self.robot.numLinks()
 		for i in range(len(LEFT_ARM_INDICES_SIM)):
         	    joints[LEFT_ARM_INDICES_SIM[i]] = limbJoints[LEFT_JOINTS_NAMES_SIM[i]]
+	    	joints[55] = 0.005
+	    	joints[56] = -0.005
 	    	return joints
 
 	"""
@@ -311,6 +313,8 @@ class BaxterKlamptInterface:
 	    	joints = [0.0]*self.robot.numLinks()
         	for i in range(len(RIGHT_ARM_INDICES_SIM)):
         	    joints[RIGHT_ARM_INDICES_SIM[i]] = limbJoints[RIGHT_JOINTS_NAMES_SIM[i]]
+	    	joints[58] = 0.005
+	    	joints[59] = -0.005
 	    	return joints
 
 	"""
@@ -321,6 +325,10 @@ class BaxterKlamptInterface:
         	for i in range(len(RIGHT_ARM_INDICES_SIM)):
         	    joints[RIGHT_ARM_INDICES_SIM[i]] = limbJoints[RIGHT_JOINTS_NAMES_SIM[i]]
         	    joints[LEFT_ARM_INDICES_SIM[i]] = limbJoints[LEFT_JOINTS_NAMES_SIM[i]]
+	    	joints[55] = 0.005
+	    	joints[56] = -0.005
+	    	joints[58] = 0.005
+	    	joints[59] = -0.005
 	    	return joints
 
 	"""
