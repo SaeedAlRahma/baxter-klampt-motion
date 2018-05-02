@@ -30,11 +30,11 @@ from baxter_klampt_interface import BaxterKlamptInterface
 SIMULATION CONFIGURATIONS
 """
 PLANNER_TYPE = "sbl_opt"
-PLANNER_ROUNDS = 10
 PLANNER_TIMES = 50
-JOINT_SPEED_RATIO = 0.1 # [0, 1.0] of 1.5 m/s (4.0 for wrists) 
+PLANNER_ROUNDS = 20
+JOINT_SPEED_RATIO = 0.3 # [0, 1.0] of 1.5 m/s (4.0 for wrists) 
 JOINT_CMD_THRESHOLD = 0.008726646 # default
-JSON_PATHNAME = "TASK_STACK_DIR"
+JSON_PATHNAME = "TASK_STACK_TUK1"
 JOINTS_NUM = 60 # Baxter with parallel hands
 
 # Directories
@@ -127,6 +127,9 @@ def main():
         # for q in wholepath:
         #     print '  ', q
 
+    print "Total planning time", baxter.getPlanningTime()
+
+    t0 = time.time()
     for q in wholepath:
         # moveToMilestoneBlocking(limbRight=LIMB_RIGHT, gripRight=GRIP_RIGHT, milestone=q)
         # moveToMilestoneBlocking(LIMB_LEFT, GRIP_LEFT, q)
@@ -134,6 +137,7 @@ def main():
         # moveToMilestone(LIMB_RIGHT, LIMB_LEFT, GRIP_RIGHT, GRIP_LEFT, q)
         baxter.moveToMilestone(q)
 
+    print "Motion time is", time.time()-t0
     print("Done.")
 
 

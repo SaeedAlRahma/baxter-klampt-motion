@@ -4,7 +4,1688 @@ NOTES
 	- Different planners (sbl, rrt, prm)
 	- Variation of planners (shortcutting, restart, etc)
 	- Different number of iterations
-	- Different time?
+	- Different time? (once ready)
 * Compare the TIME each solution takes for the robot to complete
 	- Normal task
 	- Untuck after each motion
+
+
+sbl_opt		sbl 		sbl_cut		rrt 		rrt_cut		rrt_opt		lazyprm*
+
+
+SBL first DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 1000
+Planner # times 0
+Creating plan...
+Planner creation time 0.00978994369507
+Planning...
+Planning time, 25 iterations 0.795016050339
+Creating plan...
+Planner creation time 0.00427198410034
+Planning...
+Planning time, 174 iterations 2.2999060154
+Creating plan...
+Planner creation time 0.00802612304688
+Planning...
+Planning time, 191 iterations 1.96055698395
+Path: 29
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 1000
+Planner # times 0
+Creating plan...
+Planner creation time 0.044998884201
+Planning...
+Planning time, 14 iterations 0.495148897171
+Creating plan...
+Planner creation time 0.00636601448059
+Planning...
+Planning time, 32 iterations 0.912813901901
+Creating plan...
+Planner creation time 0.00842308998108
+Planning...
+Planning time, 691 iterations 4.83767104149
+Path: 19
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 1000
+Planner # times 0
+Creating plan...
+Planner creation time 0.0115649700165
+Planning...
+Planning time, 217 iterations 2.14689087868
+Creating plan...
+Planner creation time 0.00592303276062
+Planning...
+Planning time, 687 iterations 7.63508081436
+Creating plan...
+Planner creation time 0.00936508178711
+Planning...
+Planning time, 129 iterations 1.28081607819
+Path: 55
+
+
+SBL 10*10 DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 10
+Planner # times 10
+Creating plan...
+Planner creation time 0.00780510902405
+Planning...
+Planning time, 100 iterations 0.85027217865
+Creating plan...
+Planner creation time 0.00552797317505
+Planning...
+Planning time, 100 iterations 0.488811969757
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 10
+Planner # times 10
+Creating plan...
+Planner creation time 0.00722599029541
+Planning...
+Planning time, 100 iterations 0.702919006348
+Failed to plan path between configuration
+{u'left_w0': 0.66115, u'left_w1': 1.01741, u'left_w2': -0.49279, u'right_s0': 0.08207, u'right_s1': -1.00169, u'right_w0': -0.66882, u'right_w1': 1.02815, u'right_w2': 0.49739, u'left_g0': 0, u'right_g0': 0, u'left_e0': -1.12939, u'left_e1': 1.95007, u'left_s0': -0.09127, u'left_s1': -1.01703, u'right_e0': 1.1873, u'right_e1': 1.94164}
+and
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+Failed to find path between configation 0 and 1
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 10
+Planner # times 10
+Creating plan...
+Planner creation time 0.0225028991699
+Planning...
+Planning time, 100 iterations 1.3506360054
+Creating plan...
+Planner creation time 0.00830006599426
+Planning...
+Planning time, 100 iterations 0.558483123779
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+
+SBL 10*20 DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 20
+Planner # times 10
+Creating plan...
+Planner creation time 0.0079710483551
+Planning...
+Planning time, 200 iterations 1.47458791733
+Creating plan...
+Planner creation time 0.00547003746033
+Planning...
+Planning time, 200 iterations 1.81233501434
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 20
+Planner # times 10
+Creating plan...
+Planner creation time 0.00856804847717
+Planning...
+Planning time, 200 iterations 1.81304311752
+Creating plan...
+Planner creation time 0.00599002838135
+Planning...
+Planning time, 200 iterations 1.17789912224
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 20
+Planner # times 10
+Creating plan...
+Planner creation time 0.0078489780426
+Planning...
+Planning time, 200 iterations 1.37214517593
+Creating plan...
+Planner creation time 0.00480890274048
+Planning...
+Planning time, 200 iterations 1.06249594688
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+
+SBL 25*10 DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 10
+Planner # times 25
+Creating plan...
+Planner creation time 0.00600600242615
+Planning...
+Planning time, 250 iterations 2.79024410248
+Creating plan...
+Planner creation time 0.00624394416809
+Planning...
+Planning time, 250 iterations 1.3338727951
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 10
+Planner # times 25
+Creating plan...
+Planner creation time 0.00728106498718
+Planning...
+Planning time, 250 iterations 0.906180143356
+Creating plan...
+Planner creation time 0.00562000274658
+Planning...
+Planning time, 250 iterations 1.42302799225
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 10
+Planner # times 25
+Creating plan...
+Planner creation time 0.00465297698975
+Planning...
+Planning time, 250 iterations 1.98038506508
+Failed to plan path between configuration
+{u'left_w0': 0.66115, u'left_w1': 1.01741, u'left_w2': -0.49279, u'right_s0': 0.08207, u'right_s1': -1.00169, u'right_w0': -0.66882, u'right_w1': 1.02815, u'right_w2': 0.49739, u'left_g0': 0, u'right_g0': 0, u'left_e0': -1.12939, u'left_e1': 1.95007, u'left_s0': -0.09127, u'left_s1': -1.01703, u'right_e0': 1.1873, u'right_e1': 1.94164}
+and
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+Failed to find path between configation 0 and 1
+
+
+SBL 25*20 DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 20
+Planner # times 25
+Creating plan...
+Planner creation time 0.00633811950684
+Planning...
+Planning time, 500 iterations 1.65861296654
+Creating plan...
+Planner creation time 0.00601696968079
+Planning...
+Planning time, 500 iterations 4.06537294388
+Creating plan...
+Planner creation time 0.00880193710327
+Planning...
+Planning time, 500 iterations 0.549371004105
+Path: 22
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 20
+Planner # times 25
+Creating plan...
+Planner creation time 0.0445780754089
+Planning...
+Planning time, 500 iterations 0.49937915802
+Creating plan...
+Planner creation time 0.00549006462097
+Planning...
+Planning time, 500 iterations 4.05400204659
+Creating plan...
+Planner creation time 0.00690412521362
+Planning...
+Planning time, 500 iterations 2.05922985077
+Path: 41
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 20
+Planner # times 25
+Creating plan...
+Planner creation time 0.0384669303894
+Planning...
+Planning time, 500 iterations 1.02011179924
+Creating plan...
+Planner creation time 0.00459909439087
+Planning...
+Planning time, 500 iterations 2.91919016838
+Creating plan...
+Planner creation time 0.00745987892151
+Planning...
+Planning time, 500 iterations 0.646345853806
+Path: 31
+
+<<<>>>
+
+SBL 50*10 DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 10
+Planner # times 50
+Creating plan...
+Planner creation time 0.0406219959259
+Planning...
+Planning time, 500 iterations 0.444344043732
+Creating plan...
+Planner creation time 0.00673890113831
+Planning...
+Planning time, 500 iterations 3.3171081543
+Creating plan...
+Planner creation time 0.00854802131653
+Planning...
+Planning time, 500 iterations 3.79549098015
+Path: 18
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 10
+Planner # times 50
+Creating plan...
+Planner creation time 0.0386610031128
+Planning...
+Planning time, 500 iterations 1.41295099258
+Creating plan...
+Planner creation time 0.00628995895386
+Planning...
+Planning time, 500 iterations 2.11655092239
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 10
+Planner # times 50
+Creating plan...
+Planner creation time 0.00559091567993
+Planning...
+Planning time, 500 iterations 1.30657792091
+Creating plan...
+Planner creation time 0.00655603408813
+Planning...
+Planning time, 500 iterations 3.23465704918
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+<<<>>>
+
+SBL 50*20 DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+Planner creation time 0.0416879653931
+Planning...
+Planning time, 1000 iterations 1.38862204552
+Creating plan...
+Planner creation time 0.00488615036011
+Planning...
+Planning time, 1000 iterations 6.22387981415
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+Planner creation time 0.00521898269653
+Planning...
+Planning time, 1000 iterations 2.687073946
+Creating plan...
+Planner creation time 0.00443005561829
+Planning...
+Planning time, 1000 iterations 3.42124319077
+Creating plan...
+Planner creation time 0.00826406478882
+Planning...
+Planning time, 1000 iterations 0.607294082642
+Path: 27
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'randomizeFrequency': 1000}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+Planner creation time 0.0416619777679
+Planning...
+Planning time, 1000 iterations 1.25945997238
+Creating plan...
+Planner creation time 0.00589799880981
+Planning...
+Planning time, 1000 iterations 4.08313918114
+Creating plan...
+Planner creation time 0.0141079425812
+Planning...
+Planning time, 1000 iterations 4.13037705421
+Path: 27
+
+SBL_CUT first DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'shortcut': 1, 'randomizeFrequency': 1000}
+Planner # rounds 1000
+Planner # times 0
+Creating plan...
+Planner creation time 0.0435819625854
+Planning...
+Planning time, 449 iterations 3.91157722473
+Creating plan...
+Planner creation time 0.00639605522156
+Planning...
+Planning time, 194 iterations 2.89172101021
+Creating plan...
+Planner creation time 0.0085129737854
+Planning...
+Planning time, 52 iterations 0.873518943787
+Path: 28
+
+SBL_CUT 10*10 DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'shortcut': 1, 'randomizeFrequency': 1000}
+Planner # rounds 10
+Planner # times 10
+Creating plan...
+Planner creation time 0.0102338790894
+Planning...
+Planning time, 100 iterations 4.14723181725
+Creating plan...
+Planner creation time 0.00559616088867
+Planning...
+Planning time, 100 iterations 0.593741893768
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+
+SBL_CUT 10*20 DIR
+
+
+SBL_CUT 25*10 DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'shortcut': 1, 'randomizeFrequency': 1000}
+Planner # rounds 25
+Planner # times 10
+Creating plan...
+Planner creation time 0.00573897361755
+Planning...
+Planning time, 250 iterations 4.49711990356
+Creating plan...
+Planner creation time 0.00556802749634
+Planning...
+Planning time, 250 iterations 1.93506503105
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+
+
+SBL_CUT 25*20 DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'shortcut': 1, 'randomizeFrequency': 1000}
+Planner # rounds 25
+Planner # times 20
+Creating plan...
+Planner creation time 0.00703501701355
+Planning...
+Planning time, 500 iterations 12.4070310593
+Creating plan...
+Planner creation time 0.00618696212769
+Planning...
+Planning time, 500 iterations 7.08546185493
+Creating plan...
+Planner creation time 0.00671482086182
+Planning...
+Planning time, 500 iterations 14.216684103
+Path: 25
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'shortcut': 1, 'randomizeFrequency': 1000}
+Planner # rounds 25
+Planner # times 20
+Creating plan...
+Planner creation time 0.0419838428497
+Planning...
+Planning time, 500 iterations 8.13055801392
+Creating plan...
+Planner creation time 0.00646996498108
+Planning...
+Planning time, 500 iterations 3.3289399147
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'shortcut': 1, 'randomizeFrequency': 1000}
+Planner # rounds 25
+Planner # times 20
+Creating plan...
+Planner creation time 0.0088210105896
+Planning...
+Planning time, 500 iterations 9.52162408829
+Creating plan...
+Planner creation time 0.00594210624695
+Planning...
+Planning time, 500 iterations 5.40968799591
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+
+SBL_CUT 50*10 DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'shortcut': 1, 'randomizeFrequency': 1000}
+Planner # rounds 10
+Planner # times 50
+Creating plan...
+Planner creation time 0.0104689598083
+Planning...
+Planning time, 500 iterations 10.177888155
+Creating plan...
+Planner creation time 0.00618100166321
+Planning...
+Planning time, 500 iterations 2.84404301643
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+YEEEESSSSS
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'shortcut': 1, 'randomizeFrequency': 1000}
+Planner # rounds 10
+Planner # times 50
+Creating plan...
+Planner creation time 0.00991582870483
+Planning...
+Planning time, 500 iterations 6.27416396141
+Creating plan...
+Planner creation time 0.0056619644165
+Planning...
+Planning time, 500 iterations 11.9320008755
+Creating plan...
+Planner creation time 0.00840091705322
+Planning...
+Planning time, 500 iterations 24.3362469673
+Path: 47
+Done.
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'shortcut': 1, 'randomizeFrequency': 1000}
+Planner # rounds 10
+Planner # times 50
+Creating plan...
+Planner creation time 0.00997304916382
+Planning...
+Planning time, 500 iterations 17.3482809067
+Creating plan...
+Planner creation time 0.00517392158508
+Planning...
+Planning time, 500 iterations 2.83481693268
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'shortcut': 1, 'randomizeFrequency': 1000}
+Planner # rounds 10
+Planner # times 50
+Creating plan...
+Planner creation time 0.00735092163086
+Planning...
+Planning time, 500 iterations 10.6375830173
+Creating plan...
+Planner creation time 0.00570702552795
+Planning...
+Planning time, 500 iterations 12.4292459488
+Creating plan...
+Planner creation time 0.00917100906372
+Planning...
+
+Planning time, 500 iterations 21.2706661224
+Path: 31
+Motion time is 32.0947790146
+Done.
+
+SBL_CUT 50*20 DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'shortcut': 1, 'randomizeFrequency': 1000}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+Planner creation time 0.0441539287567
+Planning...
+Planning time, 1000 iterations 11.9747409821
+Creating plan...
+Planner creation time 0.00507521629333
+Planning...
+Planning time, 1000 iterations 12.1247930527
+Creating plan...
+Planner creation time 0.00946688652039
+Planning...
+Planning time, 1000 iterations 20.8051269054
+Path: 69
+Motion time is 38.9684350491
+Done.
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'shortcut': 1, 'randomizeFrequency': 1000}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+Planner creation time 0.0413219928741
+Planning...
+Planning time, 1000 iterations 12.0790421963
+Creating plan...
+Planner creation time 0.00591993331909
+Planning...
+Planning time, 1000 iterations 15.8290820122
+Creating plan...
+Planner creation time 0.00908708572388
+Planning...
+Planning time, 1000 iterations 37.0179080963
+Path: 63
+Motion time is 32.9694991112
+Done.
+
+
+SBL_CUT 50*40 DIR
+FAIL-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'shortcut': 1, 'randomizeFrequency': 1000}
+Planner # rounds 40
+Planner # times 50
+Creating plan...
+Planner creation time 0.00846600532532
+Planning...
+Planning time, 2000 iterations 17.9210720062
+Creating plan...
+Planner creation time 0.00702595710754
+Planning...
+Planning time, 2000 iterations 22.8168439865
+Creating plan...
+Planner creation time 0.00628709793091
+Planning...
+Planning time, 2000 iterations 71.3278698921
+Path: 64
+Total planning time 112.066547871
+Motion time is 34.3866741657
+
+STUCK-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'shortcut': 1, 'randomizeFrequency': 1000}
+Planner # rounds 40
+Planner # times 50
+Creating plan...
+Planner creation time 0.0142030715942
+Planning...
+Planning time, 2000 iterations 20.7230169773
+Creating plan...
+Planner creation time 0.0113980770111
+Planning...
+Planning time, 2000 iterations 16.8124289513
+Creating plan...
+Planner creation time 0.00799489021301
+Planning...
+Planning time, 2000 iterations 35.0190780163
+Path: 103
+Total planning time 72.554929018
+
+YESSSS-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'sbl', 'shortcut': 1, 'randomizeFrequency': 1000}
+Planner # rounds 40
+Planner # times 50
+Creating plan...
+Planner creation time 0.00843501091003
+Planning...
+Planning time, 2000 iterations 23.9254341125
+Creating plan...
+Planner creation time 0.00568604469299
+Planning...
+Planning time, 2000 iterations 20.5837540627
+Creating plan...
+Planner creation time 0.00885701179504
+Planning...
+Planning time, 2000 iterations 63.3133530617
+Path: 90
+Total planning time 107.822648048
+Motion time is 47.0700590611
+Done.
+
+
+
+
+SBL_RST 50*10 DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'perturbationRadius': 0.5, 'type': 'sbl', 'restart': 1}
+Planner # rounds 10
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0425810813904
+Planning...
+Restarting due to found solution, 1.65088 time
+Restarting due to found solution, 1.48061 time
+Restarting due to found solution, 0.542231 time
+Restarting due to found solution, 1.41791 time
+Restarting due to found solution, 1.8538 time
+Planning time, 500 iterations 7.3332118988
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00622510910034
+Planning...
+Planning time, 500 iterations 3.31359410286
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'perturbationRadius': 0.5, 'type': 'sbl', 'restart': 1}
+Planner # rounds 10
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00590085983276
+Planning...
+Restarting due to found solution, 1.95551 time
+Restarting due to found solution, 1.38819 time
+Restarting due to found solution, 2.32437 time
+Restarting due to found solution, 0.532161 time
+Planning time, 500 iterations 6.94814491272
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00482106208801
+Planning...
+Restarting due to found solution, 3.17561 time
+Planning time, 500 iterations 4.17919778824
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00637793540955
+Planning...
+Restarting due to found solution, 2.00533 time
+Restarting due to found solution, 1.40823 time
+Restarting due to found solution, 1.20526 time
+Restarting due to found solution, 1.0337 time
+Restarting due to found solution, 1.82924 time
+Restarting due to found solution, 2.13693 time
+Restarting due to found solution, 1.30775 time
+Planning time, 500 iterations 11.5694611073
+Path: 18
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'perturbationRadius': 0.5, 'type': 'sbl', 'restart': 1}
+Planner # rounds 10
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0078809261322
+Planning...
+Restarting due to found solution, 0.680674 time
+Restarting due to found solution, 2.25517 time
+Restarting due to found solution, 0.453316 time
+Restarting due to found solution, 1.25522 time
+Planning time, 500 iterations 5.84165692329
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00450491905212
+Planning...
+Planning time, 500 iterations 3.42646193504
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'perturbationRadius': 0.5, 'type': 'sbl', 'restart': 1}
+Planner # rounds 10
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00659394264221
+Planning...
+Restarting due to found solution, 1.00088 time
+Restarting due to found solution, 1.21684 time
+Restarting due to found solution, 0.883432 time
+Restarting due to found solution, 2.0942 time
+Restarting due to found solution, 1.49017 time
+Planning time, 500 iterations 7.07811188698
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.004478931427
+Planning...
+Planning time, 500 iterations 3.41625905037
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+
+
+SBL_RST 50*20 DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'perturbationRadius': 0.5, 'type': 'sbl', 'restart': 1}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0439701080322
+Planning...
+Restarting due to found solution, 2.04878 time
+Restarting due to found solution, 2.13524 time
+Restarting due to found solution, 0.375601 time
+Restarting due to found solution, 0.731668 time
+Restarting due to found solution, 2.83807 time
+Restarting due to found solution, 1.09573 time
+Restarting due to found solution, 1.7337 time
+Planning time, 1000 iterations 11.5535168648
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00454592704773
+Planning...
+Restarting due to found solution, 2.66878 time
+Planning time, 1000 iterations 6.75897312164
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00948715209961
+Planning...
+Restarting due to found solution, 0.357057 time
+Restarting due to found solution, 2.32129 time
+Restarting due to found solution, 1.49536 time
+Restarting due to found solution, 0.761565 time
+Planning time, 1000 iterations 9.03628611565
+Path: 17
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'perturbationRadius': 0.5, 'type': 'sbl', 'restart': 1}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0405540466309
+Planning...
+Restarting due to found solution, 1.55635 time
+Restarting due to found solution, 0.507021 time
+Restarting due to found solution, 2.80613 time
+Restarting due to found solution, 2.16738 time
+Restarting due to found solution, 0.763851 time
+Restarting due to found solution, 0.402618 time
+Restarting due to found solution, 0.49135 time
+Restarting due to found solution, 1.27481 time
+Restarting due to found solution, 1.8117 time
+Restarting due to found solution, 0.917557 time
+Planning time, 1000 iterations 12.8244249821
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00604104995728
+Planning...
+Restarting due to found solution, 4.15427 time
+Restarting due to found solution, 1.58024 time
+Restarting due to found solution, 1.68103 time
+Planning time, 1000 iterations 7.74261212349
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00759196281433
+Planning...
+Restarting due to found solution, 1.42042 time
+Restarting due to found solution, 2.22804 time
+Restarting due to found solution, 0.955067 time
+Restarting due to found solution, 0.423533 time
+Restarting due to found solution, 1.72572 time
+Restarting due to found solution, 2.55511 time
+Planning time, 1000 iterations 11.3862259388
+Path: 15
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'perturbationRadius': 0.5, 'type': 'sbl', 'restart': 1}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0434727668762
+Planning...
+Restarting due to found solution, 0.620407 time
+Restarting due to found solution, 0.55651 time
+Restarting due to found solution, 0.913968 time
+Restarting due to found solution, 0.898773 time
+Restarting due to found solution, 2.43535 time
+Restarting due to found solution, 1.48109 time
+Restarting due to found solution, 1.47966 time
+Restarting due to found solution, 2.01191 time
+Planning time, 1000 iterations 11.639040947
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00624084472656
+Planning...
+Restarting due to found solution, 7.7076 time
+Planning time, 1000 iterations 8.62659192085
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00727605819702
+Planning...
+Restarting due to found solution, 2.92032 time
+Restarting due to found solution, 0.762005 time
+Restarting due to found solution, 2.90698 time
+Restarting due to found solution, 0.621145 time
+Restarting due to found solution, 1.2987 time
+Planning time, 1000 iterations 9.8558409214
+Path: 28
+
+
+SBL_RST 50*40 DIR
+FAIL-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'perturbationRadius': 0.5, 'type': 'sbl', 'restart': 1}
+Planner # rounds 40
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0413739681244
+Planning...
+Restarting due to found solution, 1.87767 time
+Restarting due to found solution, 0.260303 time
+Restarting due to found solution, 3.26601 time
+Restarting due to found solution, 1.46646 time
+Restarting due to found solution, 2.26684 time
+Restarting due to found solution, 1.44893 time
+Restarting due to found solution, 1.23897 time
+Restarting due to found solution, 0.674017 time
+Restarting due to found solution, 4.40249 time
+Restarting due to found solution, 0.479254 time
+Restarting due to found solution, 2.0851 time
+Restarting due to found solution, 1.43449 time
+Restarting due to found solution, 1.03254 time
+Restarting due to found solution, 2.92946 time
+Planning time, 2000 iterations 27.3615539074
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0044801235199
+Planning...
+Restarting due to found solution, 8.92752 time
+Restarting due to found solution, 1.99294 time
+Restarting due to found solution, 6.46946 time
+Planning time, 2000 iterations 19.5609688759
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00832986831665
+Planning...
+Restarting due to found solution, 0.916003 time
+Restarting due to found solution, 3.88943 time
+Restarting due to found solution, 0.824226 time
+Restarting due to found solution, 1.39137 time
+Restarting due to found solution, 1.31347 time
+Restarting due to found solution, 2.25956 time
+Restarting due to found solution, 1.58485 time
+Restarting due to found solution, 0.527733 time
+Restarting due to found solution, 2.30496 time
+Restarting due to found solution, 2.66128 time
+Restarting due to found solution, 3.60502 time
+Restarting due to found solution, 0.613859 time
+Planning time, 2000 iterations 22.2125020027
+Path: 15
+Total planning time 69.135130167
+Motion time is 47.3704631329
+Done.
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'perturbationRadius': 0.5, 'type': 'sbl', 'restart': 1}
+Planner # rounds 40
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0432729721069
+Planning...
+Restarting due to found solution, 0.933413 time
+Restarting due to found solution, 0.711157 time
+Restarting due to found solution, 1.26536 time
+Restarting due to found solution, 0.702535 time
+Restarting due to found solution, 0.830003 time
+Restarting due to found solution, 0.561773 time
+Restarting due to found solution, 0.374277 time
+Restarting due to found solution, 1.40993 time
+Restarting due to found solution, 0.855357 time
+Restarting due to found solution, 2.69992 time
+Restarting due to found solution, 1.61597 time
+Restarting due to found solution, 1.70502 time
+Restarting due to found solution, 0.352842 time
+Restarting due to found solution, 0.609961 time
+Restarting due to found solution, 0.792416 time
+Restarting due to found solution, 1.35108 time
+Restarting due to found solution, 1.70411 time
+Restarting due to found solution, 1.05927 time
+Restarting due to found solution, 1.08568 time
+Restarting due to found solution, 3.65389 time
+Planning time, 2000 iterations 24.9315629005
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00595498085022
+Planning...
+Restarting due to found solution, 10.6016 time
+Restarting due to found solution, 5.23818 time
+Planning time, 2000 iterations 23.2630279064
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00734901428223
+Planning...
+Restarting due to found solution, 3.24949 time
+Restarting due to found solution, 0.380791 time
+Restarting due to found solution, 1.94325 time
+Restarting due to found solution, 3.14069 time
+Restarting due to found solution, 1.44284 time
+Restarting due to found solution, 3.55159 time
+Restarting due to found solution, 1.52067 time
+Restarting due to found solution, 2.5207 time
+Restarting due to found solution, 2.11548 time
+Restarting due to found solution, 1.74436 time
+Restarting due to found solution, 2.02428 time
+Planning time, 2000 iterations 24.4595739841
+Path: 27
+Total planning time 72.6548125744
+
+SBL_OPT 50-20 DIR
+Y&ESS-------------------- Motion Planning --------------------
+Settings: {'type': 'sbl', 'shortcut': 1, 'bidirectional': 1, 'perturbationRadius': 0.5, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'restart': 1}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0433869361877
+Planning...
+Planning time, 1000 iterations 19.6148939133
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0050368309021
+Planning...
+Planning time, 1000 iterations 14.8337790966
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00860214233398
+Planning...
+Planning time, 1000 iterations 40.1767151356
+Path: 53
+Total planning time 74.6257779598
+Motion time is 35.551322937
+Done.
+
+STUCK-------------------- Motion Planning --------------------
+Settings: {'type': 'sbl', 'shortcut': 1, 'bidirectional': 1, 'perturbationRadius': 0.5, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'restart': 1}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.040962934494
+Planning...
+Planning time, 1000 iterations 16.6421849728
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00680994987488
+Planning...
+Planning time, 1000 iterations 16.5077710152
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00637793540955
+Planning...
+Planning time, 1000 iterations 23.1722931862
+Path: 47
+Total planning time 56.3224740028
+
+-------------------- Motion Planning --------------------
+Settings: {'type': 'sbl', 'shortcut': 1, 'bidirectional': 1, 'perturbationRadius': 0.5, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'restart': 1}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0463881492615
+Planning...
+Planning time, 1000 iterations 14.5489621162
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00443482398987
+Planning...
+Planning time, 1000 iterations 16.9309289455
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00852704048157
+Planning...
+Planning time, 1000 iterations 67.3584880829
+Path: 52
+Total planning time 98.839277029
+Motion time is 52.142111063
+Done.
+
+FAIIL-------------------- Motion Planning --------------------
+Settings: {'type': 'sbl', 'shortcut': 1, 'bidirectional': 1, 'perturbationRadius': 0.5, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'restart': 1}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00767707824707
+Planning...
+Planning time, 1000 iterations 16.609498024
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00461387634277
+Planning...
+Planning time, 1000 iterations 15.6707410812
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00722408294678
+Planning...
+Planning time, 1000 iterations 74.2957408428
+Path: 50
+Total planning time 106.576153755
+Motion time is 43.9392850399
+Done.
+
+
+
+SBL_OPT 50-40 DIR
+YESSS-------------------- Motion Planning --------------------
+Settings: {'type': 'sbl', 'shortcut': 1, 'bidirectional': 1, 'perturbationRadius': 0.5, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'restart': 1}
+Planner # rounds 40
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.045254945755
+Planning...
+Planning time, 2000 iterations 23.8281040192
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0060830116272
+Planning...
+Planning time, 2000 iterations 20.6808199883
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00854992866516
+Planning...
+Planning time, 2000 iterations 62.8064880371
+Path: 65
+Total planning time 107.315865993
+Motion time is 39.6855280399
+Done.
+
+FAIIL-------------------- Motion Planning --------------------
+Settings: {'type': 'sbl', 'shortcut': 1, 'bidirectional': 1, 'perturbationRadius': 0.5, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'restart': 1}
+Planner # rounds 40
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0414609909058
+Planning...
+Planning time, 2000 iterations 22.184481144
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00680708885193
+Planning...
+Planning time, 2000 iterations 24.2436358929
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00901889801025
+Planning...
+Planning time, 2000 iterations 89.8803350925
+Path: 59
+Total planning time 136.309079885
+Motion time is 37.085157156
+Done.
+
+FAIIL-------------------- Motion Planning --------------------
+Settings: {'type': 'sbl', 'shortcut': 1, 'bidirectional': 1, 'perturbationRadius': 0.5, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'restart': 1}
+Planner # rounds 40
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0166430473328
+Planning...
+Planning time, 2000 iterations 27.7459311485
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0045371055603
+Planning...
+Planning time, 2000 iterations 28.9397790432
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00893998146057
+Planning...
+Planning time, 2000 iterations 56.5140180588
+Path: 58
+Total planning time 113.200106382
+Motion time is 49.9552371502
+Done.
+
+
+
+
+RRT first DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'rrt'}
+Planner # rounds 1000
+Planner # times 0
+Creating plan...
+Planner creation time 0.00840592384338
+Planning...
+Planning time, 1000 iterations 47.3610510826
+Failed to plan path between configuration
+{u'left_w0': 0.66115, u'left_w1': 1.01741, u'left_w2': -0.49279, u'right_s0': 0.08207, u'right_s1': -1.00169, u'right_w0': -0.66882, u'right_w1': 1.02815, u'right_w2': 0.49739, u'left_g0': 0, u'right_g0': 0, u'left_e0': -1.12939, u'left_e1': 1.95007, u'left_s0': -0.09127, u'left_s1': -1.01703, u'right_e0': 1.1873, u'right_e1': 1.94164}
+and
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+Failed to find path between configation 0 and 1
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'rrt'}
+Planner # rounds 1000
+Planner # times 0
+Creating plan...
+Planner creation time 0.00852298736572
+Planning...
+Planning time, 1000 iterations 49.304267168
+Failed to plan path between configuration
+{u'left_w0': 0.66115, u'left_w1': 1.01741, u'left_w2': -0.49279, u'right_s0': 0.08207, u'right_s1': -1.00169, u'right_w0': -0.66882, u'right_w1': 1.02815, u'right_w2': 0.49739, u'left_g0': 0, u'right_g0': 0, u'left_e0': -1.12939, u'left_e1': 1.95007, u'left_s0': -0.09127, u'left_s1': -1.01703, u'right_e0': 1.1873, u'right_e1': 1.94164}
+and
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+Failed to find path between configation 0 and 1
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'rrt'}
+Planner # rounds 1000
+Planner # times 0
+Creating plan...
+Planner creation time 0.00834608078003
+Planning...
+Planning time, 1000 iterations 51.1603760719
+Failed to plan path between configuration
+{u'left_w0': 0.66115, u'left_w1': 1.01741, u'left_w2': -0.49279, u'right_s0': 0.08207, u'right_s1': -1.00169, u'right_w0': -0.66882, u'right_w1': 1.02815, u'right_w2': 0.49739, u'left_g0': 0, u'right_g0': 0, u'left_e0': -1.12939, u'left_e1': 1.95007, u'left_s0': -0.09127, u'left_s1': -1.01703, u'right_e0': 1.1873, u'right_e1': 1.94164}
+and
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+Failed to find path between configation 0 and 1
+
+
+RRT 50*10 DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'rrt'}
+Planner # rounds 10
+Planner # times 50
+Creating plan...
+Planner creation time 0.0413091182709
+Planning...
+Planning time, 500 iterations 23.9156599045
+Failed to plan path between configuration
+{u'left_w0': 0.66115, u'left_w1': 1.01741, u'left_w2': -0.49279, u'right_s0': 0.08207, u'right_s1': -1.00169, u'right_w0': -0.66882, u'right_w1': 1.02815, u'right_w2': 0.49739, u'left_g0': 0, u'right_g0': 0, u'left_e0': -1.12939, u'left_e1': 1.95007, u'left_s0': -0.09127, u'left_s1': -1.01703, u'right_e0': 1.1873, u'right_e1': 1.94164}
+and
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+Failed to find path between configation 0 and 1
+
+
+RRT 50*20 DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'rrt'}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+Planner creation time 0.00754404067993
+Planning...
+Planning time, 1000 iterations 47.0745809078
+Failed to plan path between configuration
+{u'left_w0': 0.66115, u'left_w1': 1.01741, u'left_w2': -0.49279, u'right_s0': 0.08207, u'right_s1': -1.00169, u'right_w0': -0.66882, u'right_w1': 1.02815, u'right_w2': 0.49739, u'left_g0': 0, u'right_g0': 0, u'left_e0': -1.12939, u'left_e1': 1.95007, u'left_s0': -0.09127, u'left_s1': -1.01703, u'right_e0': 1.1873, u'right_e1': 1.94164}
+and
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+Failed to find path between configation 0 and 1
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'rrt'}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+Planner creation time 0.00809001922607
+Planning...
+Planning time, 1000 iterations 51.6620569229
+Failed to plan path between configuration
+{u'left_w0': 0.66115, u'left_w1': 1.01741, u'left_w2': -0.49279, u'right_s0': 0.08207, u'right_s1': -1.00169, u'right_w0': -0.66882, u'right_w1': 1.02815, u'right_w2': 0.49739, u'left_g0': 0, u'right_g0': 0, u'left_e0': -1.12939, u'left_e1': 1.95007, u'left_s0': -0.09127, u'left_s1': -1.01703, u'right_e0': 1.1873, u'right_e1': 1.94164}
+and
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+Failed to find path between configation 0 and 1
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'rrt'}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+Planner creation time 0.00781011581421
+Planning...
+Planning time, 1000 iterations 23.426609993
+Creating plan...
+Planner creation time 0.00539588928223
+Planning...
+Planning time, 1000 iterations 1.34258294106
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+
+RRT 50*30 DIR
+FAIIIL-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'rrt'}
+Planner # rounds 30
+Planner # times 50
+Creating plan...
+Planner creation time 0.00780200958252
+Planning...
+Planning time, 1500 iterations 5.84398293495
+Creating plan...
+Planner creation time 0.00594401359558
+Planning...
+Planning time, 1500 iterations 3.87676215172
+Creating plan...
+Planner creation time 0.00738596916199
+Planning...
+Planning time, 1500 iterations 47.6222081184
+Path: 24
+Total planning time 57.34465909
+Motion time is 78.2074751854
+Done.
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'rrt'}
+Planner # rounds 30
+Planner # times 50
+Creating plan...
+Planner creation time 0.0109391212463
+Planning...
+Planning time, 1500 iterations 2.92501497269
+Creating plan...
+Planner creation time 0.0061399936676
+Planning...
+Planning time, 1500 iterations 31.541383028
+Failed to plan path between configuration
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+and
+{u'left_w0': -0.92346, u'left_w1': 1.20571, u'left_w2': 1.86839, u'right_s0': 0.8295, u'right_s1': -0.21591, u'right_w0': 0.92231, u'right_w1': 1.34914, u'right_w2': -1.78018, u'left_g0': 0, u'right_g0': 0, u'left_e0': -0.17794, u'left_e1': 0.45981, u'left_s0': -0.683, u'left_s1': -0.0464, u'right_e0': -0.14228, u'right_e1': 0.41187}
+Failed to find path between configation 1 and 2
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'rrt'}
+Planner # rounds 30
+Planner # times 50
+Creating plan...
+Planner creation time 0.0411930084229
+Planning...
+Planning time, 1500 iterations 82.03053689
+Failed to plan path between configuration
+{u'left_w0': 0.66115, u'left_w1': 1.01741, u'left_w2': -0.49279, u'right_s0': 0.08207, u'right_s1': -1.00169, u'right_w0': -0.66882, u'right_w1': 1.02815, u'right_w2': 0.49739, u'left_g0': 0, u'right_g0': 0, u'left_e0': -1.12939, u'left_e1': 1.95007, u'left_s0': -0.09127, u'left_s1': -1.01703, u'right_e0': 1.1873, u'right_e1': 1.94164}
+and
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+Failed to find path between configation 0 and 1
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'rrt'}
+Planner # rounds 30
+Planner # times 50
+Creating plan...
+Planner creation time 0.00879883766174
+Planning...
+Planning time, 1500 iterations 27.5362350941
+Creating plan...
+Planner creation time 0.0084240436554
+Planning...
+Planning time, 1500 iterations 6.50991201401
+Creating plan...
+Planner creation time 0.00667810440063
+Planning...
+Planning time, 1500 iterations 23.8617680073
+Path: 27
+Total planning time 57.9081578255
+
+
+
+RRT_CUT 50*30 DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'rrt', 'shortcut': 1}
+Planner # rounds 30
+Planner # times 50
+Creating plan...
+Planner creation time 0.0098979473114
+Planning...
+Planning time, 1500 iterations 81.6432518959
+Failed to plan path between configuration
+{u'left_w0': 0.66115, u'left_w1': 1.01741, u'left_w2': -0.49279, u'right_s0': 0.08207, u'right_s1': -1.00169, u'right_w0': -0.66882, u'right_w1': 1.02815, u'right_w2': 0.49739, u'left_g0': 0, u'right_g0': 0, u'left_e0': -1.12939, u'left_e1': 1.95007, u'left_s0': -0.09127, u'left_s1': -1.01703, u'right_e0': 1.1873, u'right_e1': 1.94164}
+and
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+Failed to find path between configation 0 and 1
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'rrt', 'shortcut': 1}
+Planner # rounds 30
+Planner # times 50
+Creating plan...
+Planner creation time 0.00782799720764
+Planning...
+Planning time, 1500 iterations 77.5684719086
+Failed to plan path between configuration
+{u'left_w0': 0.66115, u'left_w1': 1.01741, u'left_w2': -0.49279, u'right_s0': 0.08207, u'right_s1': -1.00169, u'right_w0': -0.66882, u'right_w1': 1.02815, u'right_w2': 0.49739, u'left_g0': 0, u'right_g0': 0, u'left_e0': -1.12939, u'left_e1': 1.95007, u'left_s0': -0.09127, u'left_s1': -1.01703, u'right_e0': 1.1873, u'right_e1': 1.94164}
+and
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+Failed to find path between configation 0 and 1
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'rrt', 'shortcut': 1}
+Planner # rounds 30
+Planner # times 50
+Creating plan...
+Planner creation time 0.041671037674
+Planning...
+Planning time, 1500 iterations 77.5385921001
+Failed to plan path between configuration
+{u'left_w0': 0.66115, u'left_w1': 1.01741, u'left_w2': -0.49279, u'right_s0': 0.08207, u'right_s1': -1.00169, u'right_w0': -0.66882, u'right_w1': 1.02815, u'right_w2': 0.49739, u'left_g0': 0, u'right_g0': 0, u'left_e0': -1.12939, u'left_e1': 1.95007, u'left_s0': -0.09127, u'left_s1': -1.01703, u'right_e0': 1.1873, u'right_e1': 1.94164}
+and
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+Failed to find path between configation 0 and 1
+
+
+
+RRT_CUT 50*40 DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'perturbationRadius': 0.5, 'type': 'rrt', 'shortcut': 1}
+Planner # rounds 40
+Planner # times 50
+Creating plan...
+Planner creation time 0.00948810577393
+Planning...
+Planning time, 2000 iterations 105.507668972
+Failed to plan path between configuration
+{u'left_w0': 0.66115, u'left_w1': 1.01741, u'left_w2': -0.49279, u'right_s0': 0.08207, u'right_s1': -1.00169, u'right_w0': -0.66882, u'right_w1': 1.02815, u'right_w2': 0.49739, u'left_g0': 0, u'right_g0': 0, u'left_e0': -1.12939, u'left_e1': 1.95007, u'left_s0': -0.09127, u'left_s1': -1.01703, u'right_e0': 1.1873, u'right_e1': 1.94164}
+and
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+Failed to find path between configation 0 and 1
+
+
+
+RRT_RST 50*30 DIR
+
+
+RRT_RST 50*40 DIR
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'restartTermCond': '{foundSolution:1,maxIters:1000}', 'perturbationRadius': 0.5, 'type': 'rrt', 'restart': 1}
+Planner # rounds 40
+Planner # times 50
+Creating plan...
+Planner creation time 0.00873899459839
+Planning...
+Restarting at 1001 iters > 1000 or 49.5662 elapsed time > inf
+Planning time, 2000 iterations 96.2242889404
+Failed to plan path between configuration
+{u'left_w0': 0.66115, u'left_w1': 1.01741, u'left_w2': -0.49279, u'right_s0': 0.08207, u'right_s1': -1.00169, u'right_w0': -0.66882, u'right_w1': 1.02815, u'right_w2': 0.49739, u'left_g0': 0, u'right_g0': 0, u'left_e0': -1.12939, u'left_e1': 1.95007, u'left_s0': -0.09127, u'left_s1': -1.01703, u'right_e0': 1.1873, u'right_e1': 1.94164}
+and
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+Failed to find path between configation 0 and 1
+
+-------------------- Motion Planning --------------------
+Settings: {'bidirectional': 1, 'restartTermCond': '{foundSolution:1,maxIters:500}', 'perturbationRadius': 0.5, 'type': 'rrt', 'restart': 1}
+Planner # rounds 40
+Planner # times 50
+Creating plan...
+Planner creation time 0.0134279727936
+Planning...
+Restarting at 501 iters > 500 or 23.6884 elapsed time > inf
+Restarting at 501 iters > 500 or 23.1992 elapsed time > inf
+Restarting at 501 iters > 500 or 23.1377 elapsed time > inf
+Planning time, 2000 iterations 91.5184719563
+Failed to plan path between configuration
+{u'left_w0': 0.66115, u'left_w1': 1.01741, u'left_w2': -0.49279, u'right_s0': 0.08207, u'right_s1': -1.00169, u'right_w0': -0.66882, u'right_w1': 1.02815, u'right_w2': 0.49739, u'left_g0': 0, u'right_g0': 0, u'left_e0': -1.12939, u'left_e1': 1.95007, u'left_s0': -0.09127, u'left_s1': -1.01703, u'right_e0': 1.1873, u'right_e1': 1.94164}
+and
+{u'left_w0': 0.37774, u'left_w1': -0.19673, u'left_w2': -0.60976, u'right_s0': 0.85289, u'right_s1': -0.20018, u'right_w0': 0.14458, u'right_w1': -0.20862, u'right_w2': -0.11467, u'left_g0': 1, u'right_g0': 1, u'left_e0': 0.1975, u'left_e1': 0.89968, u'left_s0': -0.90236, u'left_s1': -0.22818, u'right_e0': -0.10776, u'right_e1': 0.84944}
+Failed to find path between configation 0 and 1
+
+
+IND1
+-------------------- Motion Planning --------------------
+Settings: {'type': 'sbl', 'shortcut': 1, 'bidirectional': 1, 'perturbationRadius': 0.5, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'restart': 1}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0417969226837
+Planning...
+Planning time, 1000 iterations 13.4817519188
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00436902046204
+Planning...
+Planning time, 1000 iterations 15.490637064
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.020271062851
+Planning...
+Planning time, 1000 iterations 59.4894618988
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.011137008667
+Planning...
+Planning time, 1000 iterations 12.2196800709
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00590491294861
+Planning...
+Planning time, 1000 iterations 12.1047370434
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0107021331787
+Planning...
+Planning time, 1000 iterations 44.839673996
+Path: 118
+Total planning time 157.626845121
+
+-------------------- Motion Planning --------------------
+Settings: {'type': 'sbl', 'shortcut': 1, 'bidirectional': 1, 'perturbationRadius': 0.5, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'restart': 1}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0409710407257
+Planning...
+Planning time, 1000 iterations 9.10161995888
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00431394577026
+Planning...
+Planning time, 1000 iterations 17.4265799522
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0209288597107
+Planning...
+Planning time, 1000 iterations 57.1882958412
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00952792167664
+Planning...
+Planning time, 1000 iterations 14.6063621044
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00445199012756
+Planning...
+Planning time, 1000 iterations 11.3684961796
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0138869285583
+Planning...
+Planning time, 1000 iterations 50.6555669308
+Path: 128
+Total planning time 160.34937501
+Motion time is 75.5259809494
+Done.
+
+FAIL-------------------- Motion Planning --------------------
+Settings: {'type': 'sbl', 'shortcut': 1, 'bidirectional': 1, 'perturbationRadius': 0.5, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'restart': 1}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0409750938416
+Planning...
+Planning time, 1000 iterations 13.5998589993
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00429201126099
+Planning...
+Planning time, 1000 iterations 16.9882290363
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0233159065247
+Planning...
+Planning time, 1000 iterations 54.2956290245
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0110251903534
+Planning...
+Planning time, 1000 iterations 13.8667140007
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00806307792664
+Planning...
+Planning time, 1000 iterations 13.7981631756
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.011255979538
+Planning...
+Planning time, 1000 iterations 63.1627578735
+Path: 110
+Total planning time 175.712877989
+Motion time is 69.8922269344
+Done.
+
+
+TUK1
+FAIIL-------------------- Motion Planning --------------------
+Settings: {'type': 'sbl', 'shortcut': 1, 'bidirectional': 1, 'perturbationRadius': 0.5, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'restart': 1}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.012274980545
+Planning...
+Planning time, 1000 iterations 13.9665160179
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00500702857971
+Planning...
+Planning time, 1000 iterations 23.4815611839
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.034695148468
+Planning...
+Planning time, 1000 iterations 71.4884109497
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00733685493469
+Planning...
+Planning time, 1000 iterations 42.39747715
+Path: 75
+Total planning time 151.334675074
+Motion time is 41.8609409332
+Done.
+
+FAIIL-------------------- Motion Planning --------------------
+Settings: {'type': 'sbl', 'shortcut': 1, 'bidirectional': 1, 'perturbationRadius': 0.5, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'restart': 1}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0463469028473
+Planning...
+Planning time, 1000 iterations 22.5635280609
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00864505767822
+Planning...
+Planning time, 1000 iterations 29.2742869854
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0347111225128
+Planning...
+Planning time, 1000 iterations 68.7941589355
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00859308242798
+Planning...
+Planning time, 1000 iterations 45.3510639668
+Path: 56
+Total planning time 165.984689951
+Motion time is 48.846460104
+Done.
+
+FAIIL-------------------- Motion Planning --------------------
+Settings: {'type': 'sbl', 'shortcut': 1, 'bidirectional': 1, 'perturbationRadius': 0.5, 'restartTermCond': '{foundSolution:1,maxIters:1000', 'restart': 1}
+Planner # rounds 20
+Planner # times 50
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00853586196899
+Planning...
+Planning time, 1000 iterations 11.4788320065
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00602197647095
+Planning...
+Planning time, 1000 iterations 33.7514569759
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.0362870693207
+Planning...
+Planning time, 1000 iterations 67.2417118549
+Creating plan...
+AnyCollection::read(): Map entries not separated by commas
+Planner creation time 0.00873804092407
+Planning...
+Planning time, 1000 iterations 49.075797081
+Path: 50
+Total planning time 161.548899889
+Motion time is 40.5422110558
+Done.

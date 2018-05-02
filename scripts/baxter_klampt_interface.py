@@ -43,6 +43,7 @@ class BaxterKlamptInterface:
 		self.planType = plannerType
 		self.planRounds = planRounds
 		self.planTimes = planTimes
+		self.planningTime = 0
 		self.jointThreshold = jointThreshold
 		self.robotState = baxter_interface.RobotEnable(CHECK_VERSION)
 		self.robotInitState = self.robotState.state().enabled
@@ -147,13 +148,13 @@ class BaxterKlamptInterface:
 	"""
 	def getAllSettings(self):
 		planTypeDict = {}
-		planTypeDict["sbl_opt"] = { 'type':"sbl", 'perturbationRadius':0.5, 'bidirectional':1, 'shortcut':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:1000"}
-		planTypeDict["sbl"] = { 'type':"sbl", 'perturbationRadius':0.5, 'randomizeFrequency':1000 }
-		planTypeDict["sbl_cut"] = { 'type':"sbl", 'perturbationRadius':0.5, 'randomizeFrequency':1000, 'shortcut':1 }
-		planTypeDict["rrt"] = { 'type':"rrt", 'perturbationRadius':0.5, 'bidirectional':1 }
-		planTypeDict["rrt_cut"] = { 'type':"rrt", 'perturbationRadius':0.5, 'bidirectional':1, 'shortcut':1 }
-		planTypeDict["rrt_opt"] = { 'type':"rrt", 'perturbationRadius':0.5, 'bidirectional':1, 'shortcut':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:1000}" }
-		planTypeDict["lazyprm*"] = { 'type':"lazyprm*", 'connectionThreshold':100 }
+		planTypeDict["sbl"] = 		{ 'type':"sbl", 'perturbationRadius':0.5, 'bidirectional':1, 'randomizeFrequency':1000 }
+		planTypeDict["sbl_cut"] = 	{ 'type':"sbl", 'perturbationRadius':0.5, 'bidirectional':1, 'randomizeFrequency':1000, 'shortcut':1 }
+		planTypeDict["sbl_rst"] = 	{ 'type':"sbl", 'perturbationRadius':0.5, 'bidirectional':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:1000"}
+		planTypeDict["sbl_opt"] = 	{ 'type':"sbl", 'perturbationRadius':0.5, 'bidirectional':1, 'shortcut':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:1000"}
+		planTypeDict["rrt"] = 		{ 'type':"rrt", 'perturbationRadius':0.5, 'bidirectional':1 }
+		planTypeDict["rrt_cut"] = 	{ 'type':"rrt", 'perturbationRadius':0.5, 'bidirectional':1, 'shortcut':1 }
+		planTypeDict["rrt_rst"] = 	{ 'type':"rrt", 'perturbationRadius':0.5, 'bidirectional':1, 'restart':1, 'restartTermCond':"{foundSolution:1,maxIters:500}" }
 		return planTypeDict
 
 	"""
@@ -307,6 +308,12 @@ class BaxterKlamptInterface:
 	    	return joints
 
 	"""
+	Get the planning time
+	"""
+	def getPlanningTime(self):
+	    	return self.planningTime
+
+	"""
 	Convert right joints configuration dictionary to simulation configuration array
 	"""
 	def getRightSimJoints(self, limbJoints):
@@ -436,13 +443,16 @@ class BaxterKlamptInterface:
 	        return None
 
 	    print "Planner creation time",time.time()-t0
-	    t0 = time.time()
 	    # motionplanning.CSpaceInterface.enableAdaptiveQueries()
 	    print "Planning..."
-	    for round in range(self.planRounds):
-	        plan.planMore(self.planTimes)
-	    print "Planning time,", self.planRounds*self.planTimes, "iterations",time.time()-t0
-
+	    if self.planTimes == 0:
+	    	self.firstPathPlanner(plan)
+	    else:
+		    t0 = time.time()
+		    for round in range(self.planRounds):
+		        plan.planMore(self.planTimes)
+		    print "Planning time,", self.planRounds*self.planTimes, "iterations",time.time()-t0
+		    self.planningTime = self.planningTime + time.time()-t0
 	    #this code just gives some debugging information. it may get expensive
 	    #V,E = plan.getRoadmap()
 	    #print len(V),"feasible milestones sampled,",len(E),"edges connected"
@@ -487,6 +497,22 @@ class BaxterKlamptInterface:
 	        grip[JSON_GRIP_LEFT][1] = q[JSON_GRIP_LEFT]
 
 	    return self.getCommandPath(path, grip)
+
+	"""
+	Find first path of the robot motion from initial to goal configuration
+	"""
+	def firstPathPlanner(self, plan):
+	    t0 = time.time()
+	    round = 0
+	    while round < self.planRounds:
+	        plan.planMore(1)
+	        if plan.getPath() is not None:
+	        	break
+	        round = round + 1
+	    print "Planning time,", round*1, "iterations",time.time()-t0
+	    self.planningTime = self.planningTime + time.time()-t0
+
+	    # return path.getPath()
 
 	"""
 	Command the left grip (1 for closed, 0 for open)
@@ -557,7 +583,7 @@ class BaxterKlamptInterface:
 	"""
 	Move the robot from initial to next configuration
 	"""
-	def moveToMilestone(self, milestone):
+	def moveToMilestone(self, milestone, verbose=False):
 	    gripCmd = {JSON_RIGHT: 0, JSON_LEFT: 0}
 	    limbCmd = {JSON_RIGHT: {}, JSON_LEFT: {}}
 
@@ -573,5 +599,6 @@ class BaxterKlamptInterface:
 	                limbCmd[JSON_LEFT][q] = milestone[q]
 	        gripCmd[JSON_LEFT] = milestone[JSON_GRIP_LEFT]
 
-	    self.printMilestone("moveToMilestone", milestone, gripCmd[JSON_LEFT], gripCmd[JSON_RIGHT])
+	    if verbose:
+	    	self.printMilestone("moveToMilestone", milestone, gripCmd[JSON_LEFT], gripCmd[JSON_RIGHT])
 	    self.waitForMovement(limbCmd, gripCmd, self.isRightMoving(), self.isLeftMoving())

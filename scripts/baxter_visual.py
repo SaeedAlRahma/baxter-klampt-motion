@@ -17,7 +17,7 @@ from klampt import visualization
 SIMULATION CONFIGURATIONS
 """
 PLANNER_TYPE = "sbl"
-JOINT_SPEED_RATIO = 1.0 # [0, 1.0] of 1.5 m/s (4.0 for wrists) 
+JOINT_SPEED_RATIO = 0.3 # [0, 1.0] of 1.5 m/s (4.0 for wrists) 
 JOINTS_NUM = 60 # Baxter with parallel hands
 
 # Directories
@@ -27,7 +27,7 @@ KLAMPT_MODEL = "baxter_with_parallel_gripper_col.rob"
 RESOURCE_DIR = "/home/dukehal/saeed-s2018/src/baxter_saeed/resources/"
 WORLD_MODEL = "baxterWorld.xml"
 JSON_FILE = RESOURCE_DIR + 'dataTest.json'
-JSON_PATHNAME = "TASK_MIN"
+JSON_PATHNAME = "TASK_STACK_DIR"
 
 # Constants
 JSON_LIMB = 'limb'
